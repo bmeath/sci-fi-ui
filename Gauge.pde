@@ -1,7 +1,7 @@
 class Gauge
 {
   float xPos, yPos;
-  float size; // in pixels
+  float size;
   String title; // name of thing being measured
   String unit; // unit of measurement
   float min, max; // needle cannot point beyond these values
@@ -13,8 +13,8 @@ class Gauge
   
   Gauge()
   {
-    xPos = 125;
-    yPos = 125;
+    xPos = 100;
+    yPos = 150;
     size = 100;
     title = "measurement";
     unit = "units";
@@ -132,6 +132,6 @@ class Gauge
   
   String toString()
   {
-    return unit + "\t" + min + "\t" + max + "\t" + majorGrade + "\t" + minorGrade + "\t" + needleColour + "\t" + graduationColour + "\t" + textColour + "\t" + reading;
+    return xPos + "\t" + yPos + "\t" + size + "\t" + title + "\t" + unit + "\t" + min + "\t" + max + "\t" + majorGrade + "\t" + minorGrade + "\t" + needleColour + "\t" + graduationColour + "\t" + textColour + "\t" + reading;
   }
 }
