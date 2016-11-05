@@ -11,7 +11,7 @@ class Gauge
    */
   float majorGrade, minorGrade; // show larger markings for multiples of majorGrade
   color needleColour;
-  color graduationColour; // colour of the markings
+  color graduationColour; // colour of the graduations/markings
   color textColour; // colour of unit name and numbers beside markings
   float reading; // value which needle will point to
   
@@ -75,6 +75,11 @@ class Gauge
   void display(float val)
   {
     measure(val);
+    
+    fill(0);
+    stroke(91);
+    strokeWeight(3);
+    ellipse(xPos, yPos, size, size);
 
     float thetaStart = radians(210);
     float thetaEnd = radians(510);
@@ -82,12 +87,12 @@ class Gauge
     float xInner, yInner, xOuter, yOuter;
     
     // draw name of gauge and unit of measurement
-    textAlign(CENTER,BOTTOM);
-    fill(textColour);
-    textSize(size/12);
-    text(title, xPos, yPos - size/2);
     textAlign(CENTER);
-    text(unit, xPos, yPos + (0.4 * size));
+    fill(textColour);
+    textSize(size/13);
+    text(unit, xPos, yPos - size/6);
+    textAlign(CENTER);
+    text(title, xPos, yPos + (0.4 * size));
     
     // draw the graduations and numbers
     stroke(graduationColour);
@@ -99,20 +104,20 @@ class Gauge
       if(i % majorGrade == 0)
       {
         strokeWeight(2);
-        xInner = xPos + ((0.43 * size) * sin(theta));
-        yInner = yPos - ((0.43 * size) * cos(theta));
-        label = (i == (float)((int)i)) ? Integer.toString((int)i) : Float.toString(i);
+        xInner = xPos + ((0.42 * size) * sin(theta));
+        yInner = yPos - ((0.42 * size) * cos(theta));
+        label = (i == (float)((int)i)) ? Integer.toString((int)i) : Float.toString(i); // remove trailing zeros
         text(label, xPos + ((0.3 * size) * sin(theta)), yPos - ((0.3 * size) * cos(theta)));
       }
       else
       {
         strokeWeight(1);
-        xInner = xPos + ((0.47 * size) * sin(theta));
-        yInner = yPos - ((0.47 * size) * cos(theta));
+        xInner = xPos + ((0.46 * size) * sin(theta));
+        yInner = yPos - ((0.46 * size) * cos(theta));
       }
       
-      xOuter = xPos + ((size/2) * sin(theta));
-      yOuter = yPos - ((size/2) * cos(theta));
+      xOuter = xPos + ((size/2.1) * sin(theta));
+      yOuter = yPos - ((size/2.1) * cos(theta));
       
       line(xInner, yInner, xOuter, yOuter);
       
