@@ -12,7 +12,7 @@ class Radar
     xPos = 100;
     yPos = 150;
     size = 100;
-    title = "measurement";
+    title = "";
     colour = #FFFFFF;
     textColour = #FFFFFF;
     theta = 0;
@@ -30,14 +30,19 @@ class Radar
   
   void display()
   {
+    textAlign(CENTER,BOTTOM);
+    fill(textColour);
+    textSize(size/10);
+    text(title, xPos, yPos - size/2);
+    
     float xOuter, yOuter;
-    stroke(255);
+    stroke(colour);
     noFill();
     strokeWeight(1);
     ellipse(xPos, yPos, size, size);
-    for(float j = 1; j < 15; j += 0.5)
+    for(float j = 0; j < 15; j ++)
     {
-      stroke(255 - (16 * j));
+      stroke(colour, 255 - (16 * j));
       xOuter = xPos + ((size/2) * sin(radians(theta - j)));
       yOuter = yPos - ((size/2) * cos(radians(theta - j)));
       line(xPos, yPos, xOuter, yOuter);

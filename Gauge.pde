@@ -5,6 +5,10 @@ class Gauge
   String title; // name of thing being measured
   String unit; // unit of measurement
   float min, max; // needle cannot point beyond these values
+  /* Note:
+   * majorGrade should be a multiple of minorGrade,
+   * otherwise gauge will look a bit odd
+   */
   float majorGrade, minorGrade; // show larger markings for multiples of majorGrade
   color needleColour;
   color graduationColour; // colour of the markings
@@ -16,7 +20,7 @@ class Gauge
     xPos = 100;
     yPos = 150;
     size = 100;
-    title = "measurement";
+    title = "";
     unit = "units";
     needleColour = #FF0000;
     graduationColour = #FFFFFF;
@@ -78,34 +82,37 @@ class Gauge
     float xInner, yInner, xOuter, yOuter;
     
     // draw name of gauge and unit of measurement
-    textAlign(CENTER);
+    textAlign(CENTER,BOTTOM);
     fill(textColour);
-    textSize(size/6);
-    text(title, xPos, yPos - size);
-    text(unit, xPos, yPos + (0.8 * size));
+    textSize(size/12);
+    text(title, xPos, yPos - size/2);
+    textAlign(CENTER);
+    text(unit, xPos, yPos + (0.4 * size));
     
     // draw the graduations and numbers
     stroke(graduationColour);
-    textSize(size/10);
+    textSize(size/12);
+    String label;
     float theta = thetaStart;
     for(float i = min; i <= max; i += minorGrade)
     {
       if(i % majorGrade == 0)
       {
         strokeWeight(2);
-        xInner = xPos + ((0.7 * size) * sin(theta));
-        yInner = yPos - ((0.7 * size) * cos(theta));
-        text(Float.toString(i), xPos + ((0.58 * size) * sin(theta)), yPos - ((0.58 * size) * cos(theta)));
+        xInner = xPos + ((0.43 * size) * sin(theta));
+        yInner = yPos - ((0.43 * size) * cos(theta));
+        label = (i == (float)((int)i)) ? Integer.toString((int)i) : Float.toString(i);
+        text(label, xPos + ((0.3 * size) * sin(theta)), yPos - ((0.3 * size) * cos(theta)));
       }
       else
       {
         strokeWeight(1);
-        xInner = xPos + ((0.8 * size) * sin(theta));
-        yInner = yPos - ((0.8 * size) * cos(theta));
+        xInner = xPos + ((0.47 * size) * sin(theta));
+        yInner = yPos - ((0.47 * size) * cos(theta));
       }
       
-      xOuter = xPos + ((0.9 * size) * sin(theta));
-      yOuter = yPos - ((0.9 * size) * cos(theta));
+      xOuter = xPos + ((size/2) * sin(theta));
+      yOuter = yPos - ((size/2) * cos(theta));
       
       line(xInner, yInner, xOuter, yOuter);
       
@@ -117,12 +124,12 @@ class Gauge
     strokeWeight(2);
     fill(needleColour);
     
-    ellipse(xPos, yPos, size/10, size/10);
+    ellipse(xPos, yPos, size/20, size/20);
     
-    xInner = xPos - ((0.1 * size) * sin(thetaStart + (reading * interval)));
-    yInner = yPos + ((0.1 * size) * cos(thetaStart + (reading * interval)));
-    xOuter = xPos + ((0.7 * size) * sin(thetaStart + (reading * interval)));
-    yOuter = yPos - ((0.7 * size) * cos(thetaStart + (reading * interval)));
+    xInner = xPos - ((0.05 * size) * sin(thetaStart + (reading * interval)));
+    yInner = yPos + ((0.05 * size) * cos(thetaStart + (reading * interval)));
+    xOuter = xPos + ((0.4 * size) * sin(thetaStart + (reading * interval)));
+    yOuter = yPos - ((0.4 * size) * cos(thetaStart + (reading * interval)));
     line(xInner, yInner, xOuter, yOuter);
     
     
