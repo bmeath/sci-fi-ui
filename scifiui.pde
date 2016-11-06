@@ -2,23 +2,34 @@ void setup()
 {
   size(1280, 720);
 }
+
 Gauge speedometer = new Gauge(0.5 * 1280, 0.73 * 720, 150, "Velocity", "KM/H", 0, 1000, 200, 20, #FF0000, #FFFFFF, #0000FF);
 Radar radar = new Radar(0.78 * 1280, 0.73 * 720, 150);
-Button radarPower = new Button(0.86 * 1280, 0.67 * 720, 48, "Radar", #505050, #00FF00, false);
+Button radarPower = new Button(0.85 * 1280, 0.67 * 720, 48, "Radar", #505050, #00FF00, radar.power);
 
 void draw()
 {
   background(0);
   drawCockpit();
+  
   speedometer.display(map(mouseY, 0, height, 0, 1000));
   radar.display();
   radarPower.display();
+}
+
+void mouseClicked()
+{
+  if(radarPower.pressed())
+  {
+    radar.toggle();
+  }
 }
 
 void drawCockpit()
 {
   fill(127);
   stroke(91);
+  
   beginShape();
   vertex(0,0);
   vertex(0, 0.15 * height);

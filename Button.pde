@@ -46,14 +46,14 @@ class Button
     ellipse(xPos + (0.85 * size), yPos + (0.15 * size), size/15, size/15);
   }
   
-  boolean read()
+  boolean pressed()
   {
-    return this.state;
-  }
-  
-  void toggle()
-  {
-    state ^= true;
+    if((mouseX > xPos) && (mouseX < xPos + size) && (mouseY > yPos) && (mouseY < yPos + size/2))
+    {
+      state ^= true;
+      return true;
+    }
+    return false;
   }
   
   String toString()
