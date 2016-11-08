@@ -3,9 +3,10 @@ void setup()
   size(1280, 720);
 }
 
-Gauge speedometer = new Gauge(0.5 * 1280, 0.73 * 720, 150, "Velocity", "KM/H", 0, 1000, 200, 20, #FF0000, #FFFFFF, #0000FF);
-Radar radar = new Radar(0.78 * 1280, 0.73 * 720, 150);
-Button radarPower = new Button(0.85 * 1280, 0.67 * 720, 48, "Radar", #505050, #00FF00, radar.power);
+CircularGauge speedometer = new CircularGauge((0.5 * 1280) - 150/2, 0.63 * 720, 150, "Velocity", "KM/H", 0, 1000, 200, 20, #FF0000, #FFFFFF, #0000FF);
+VerticalGauge thermometer = new VerticalGauge(0.04 * 1280, 0.75 * 720, 150, "Temperature", "C", 0, 800, 100, #FF0000, #FFFFFF, #FFFFFF);
+Radar radar = new Radar(0.7 * 1280, 0.63 * 720, 150);
+Button radarPower = new Button(0.7 * 1280, 0.85 * 720, 48, "Radar", #303030, #FEA500, radar.power);
 
 void draw()
 {
@@ -15,6 +16,8 @@ void draw()
   speedometer.display(map(mouseY, 0, height, 0, 1000));
   radar.display();
   radarPower.display();
+  thermometer.display(map(mouseX, 0, width, 0, 800));
+  
 }
 
 void mouseClicked()

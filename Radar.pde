@@ -48,10 +48,14 @@ class Radar
   
   void display()
   {
+    float w = size;
+    float h = size;
+    float xCentre = xPos + w/2;
+    float yCentre = yPos + h/2;
     fill(0);
     stroke(91);
     strokeWeight(3);
-    rect(xPos - size/2, yPos - size/2, size, size);
+    rect(xPos, yPos, size, size);
     
     if(power)
     {
@@ -61,23 +65,23 @@ class Radar
       strokeWeight(1);
       
       stroke(colour, 127);
-      line(xPos, yPos + size/2.1, xPos, yPos - size/2.1);
-      line(xPos - size/2.1, yPos, xPos + size/2.1, yPos);
+      line(xCentre, yCentre + size/2.1, xCentre, yCentre - size/2.1);
+      line(xCentre - size/2.1, yCentre, xCentre + size/2.1, yCentre);
       
       stroke(colour);
-      ellipse(xPos, yPos, size * 0.95, size * 0.95);
+      ellipse(xCentre, yCentre, size * 0.95, size * 0.95);
       
       strokeWeight(2);
       for(float j = 0; j < 16; j += 0.5)
       {
-        xOuter = xPos + ((size/2.1) * sin(theta - radians(j)));
-        yOuter = yPos - ((size/2.1) * cos(theta - radians(j)));
-        line(xPos, yPos, xOuter, yOuter);
+        xOuter = xCentre + ((size/2.1) * sin(theta - radians(j)));
+        yOuter = yCentre - ((size/2.1) * cos(theta - radians(j)));
+        line(xCentre, yCentre, xOuter, yOuter);
         strokeWeight(1);
         if(j % 4 == 0)
         {
           stroke(colour, 127);
-          ellipse(xPos, yPos, j * size/16, j * size/16);
+          ellipse(xCentre, yCentre, j * size/16, j * size/16);
         }
         stroke(colour, 127 - (8 * j));
       }

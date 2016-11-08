@@ -32,7 +32,7 @@ class Button
   void display()
   {   
     fill(colour);
-    stroke(colour);
+    stroke(91);
     strokeWeight(2);
     rect(xPos, yPos, size, size/2);
     
