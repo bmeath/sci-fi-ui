@@ -38,7 +38,7 @@ class Button
     
     textAlign(LEFT);
     fill(textColour);
-    textSize(size/5);
+    textSize(size/4);
     text(title, xPos + size/10, yPos + size/3);
     
     noStroke();
