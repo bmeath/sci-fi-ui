@@ -1,22 +1,30 @@
 void setup()
 {
   size(1280, 720);
+  
+  for(int i = 0; i < stars.length; i++)
+  {
+    stars[i][0] = random(0, width);
+    stars[i][1] = random(0.1 * height, 0.75 * height);
+  }
+  background(0);
+  drawBackground();
+  drawCockpit();
 }
 
-CircularGauge speedometer = new CircularGauge((0.5 * 1280) - 150/2, 0.63 * 720, 150, "Velocity", "KM/H", 0, 1000, 200, 20, #FF0000, #FFFFFF, #0000FF);
-VerticalGauge thermometer = new VerticalGauge(0.04 * 1280, 0.75 * 720, 150, "Temperature", "C", 0, 800, 100, #FF0000, #FFFFFF, #FFFFFF);
+CircularGauge speedometer = new CircularGauge((0.5 * 1280) - 150/2, 0.63 * 720, 150, "Velocity", "x1000\nkm/h", 0, 25, 5, 1, #FF0000, #FFFFFF, #0000FF);
+VerticalGauge thermometer = new VerticalGauge(0.04 * 1280, 0.75 * 720, 150, "Temperature", "Deg. C", 0, 1500, 250, #FF0000, #FFFFFF, #FFFFFF);
 Radar radar = new Radar(0.7 * 1280, 0.63 * 720, 150);
 Button radarPower = new Button(0.7 * 1280, 0.85 * 720, 48, "Radar", #303030, #FEA500, radar.power);
+float[][] stars = new float[500][2];
 
 void draw()
 {
-  background(0);
-  drawCockpit();
-  
-  speedometer.display(map(mouseY, 0, height, 0, 1000));
+
+  speedometer.display(map(mouseY, 0, height, 0, 25));
   radar.display();
   radarPower.display();
-  thermometer.display(map(mouseX, 0, width, 0, 800));
+  thermometer.display(map(mouseX, 0, width, 0, 1500));
   
 }
 
@@ -53,5 +61,14 @@ void drawCockpit()
   vertex(width, height);
   endShape();
   
-  
+}
+
+void drawBackground()
+{
+  stroke(#87CEEB);
+  strokeWeight(2);
+  for(float[] coord: stars)
+  {
+    point(coord[0], coord[1]);
+  }
 }
