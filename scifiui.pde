@@ -1,32 +1,50 @@
+CircularGauge speedometer;
+VerticalGauge thermometer;
+Radar radar;
+Button radarPower;
+Button hyperdrive;
+float hyperspeed;
+float[][] stars;
+
 void setup()
 {
   size(1280, 720);
   
-  for(int i = 0; i < stars.length; i++)
+  speedometer = new CircularGauge(0.5 * width - 150/2, 0.63 * height, 150, "Velocity", "x1000\nkm/h", 0, 25, 5, 1, #FF0000, #FFFFFF, #0000FF);
+  thermometer = new VerticalGauge(0.04 * width, 0.75 * height, 150, "Temperature", "Deg. C", 0, 1500, 250, #FF0000, #FFFFFF, #FFFFFF);
+  radar = new Radar(0.7 * width, 0.63 * height, 150);
+  radarPower = new Button(0.7 * width, 0.85 * height, 48, "Radar", #303030, #FEA500, radar.power);
+  hyperdrive = new Button(0.35 * width, 0.93 * height, 48, "Warp", #303030, #00FFFF, false);
+  hyperspeed = 0;
+  stars = new float[1000][2];
+  for(float[] s: stars)
   {
-    stars[i][0] = random(0, width);
-    stars[i][1] = random(0.1 * height, 0.75 * height);
+    s[0] = random(-width/2, width/2);
+    s[1] = random((0.1 * height) - height/2, (0.75 * height) - height/2);
   }
-    background(0);
-  drawBackground();
-  drawCockpit();
-}
 
-CircularGauge speedometer = new CircularGauge((0.5 * 1280) - 150/2, 0.63 * 720, 150, "Velocity", "x1000\nkm/h", 0, 25, 5, 1, #FF0000, #FFFFFF, #0000FF);
-VerticalGauge thermometer = new VerticalGauge(0.04 * 1280, 0.75 * 720, 150, "Temperature", "Deg. C", 0, 1500, 250, #FF0000, #FFFFFF, #FFFFFF);
-Radar radar = new Radar(0.7 * 1280, 0.63 * 720, 150);
-Button radarPower = new Button(0.7 * 1280, 0.85 * 720, 48, "Radar", #303030, #FEA500, radar.power);
-Button hyperdrive = new Button(0.35 * 1280, 0.93 * 720, 48, "Warp", #303030, #00FFFF, false);
-float[][] stars = new float[500][2];
+}
 
 void draw()
 {
-
-  speedometer.display(map(mouseY, 0, height, 0, 25));
-  radar.display();
+  background(0);
+  if(hyperdrive.state)
+  {
+    if(hyperspeed < 45)
+    {
+      hyperspeed += 0.5;
+    }
+  }
+  else
+  {
+    hyperspeed = 0;
+  }
+  drawStars(hyperspeed);
+  drawCockpit();
+  speedometer.display(5 + hyperspeed);
   radarPower.display();
   hyperdrive.display();
-  thermometer.display(map(mouseX, 0, width, 0, 1500));
+  thermometer.display(map(hyperspeed, 0, 45, 0, 1500));
   
 }
 
@@ -38,7 +56,15 @@ void mouseClicked()
   }
   if(hyperdrive.pressed())
   {
-    enterHyperspace();
+    if(hyperdrive.state == false)
+    {
+      // exited hyperspace, generate destination environment
+      for(float[] s: stars)
+      {
+        s[0] = random(-width/2, width/2);
+        s[1] = random((0.1 * height) - height/2, (0.75 * height) - height/2);
+      }
+    }
   }
 }
 
@@ -69,27 +95,18 @@ void drawCockpit()
   
 }
 
-void enterHyperspace()
+void drawStars(float len)
 {
-  float dx, dy;
-  for (int i = 0; i <= 10; i++)
-  {
-    for(float[] coord: stars)
-    {
-      dx = coord[0] - width/2;
-      dy = coord[1] - height/2;
-      line(coord[0], coord[1], coord[0] + lerp(0, dx, i/10), coord[1] + lerp(0, dy, i/10));
-    }
-  }
-
-}
-
-void drawBackground()
-{
-  stroke(#87CEEB);
+  stroke(#FFFFFF);
   strokeWeight(2);
-  for(float[] coord: stars)
+  PVector v;
+  pushMatrix();
+  translate(width/2, height/2);
+  for(float[] s: stars)
   {
-    point(coord[0], coord[1]);
+    v = new PVector(s[0], s[1]);
+    v.div(v.mag());
+    line(s[0], s[1], s[0] + (pow(1.25, len) * v.x), s[1] + (pow(1.25, len) * v.y));
   }
+  popMatrix();
 }
