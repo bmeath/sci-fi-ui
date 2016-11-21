@@ -5,8 +5,6 @@ class Radar
   color colour;
   color textColour;
   float theta;
-  float speed;
-  boolean power;
   
   Radar()
   {
@@ -16,21 +14,16 @@ class Radar
     colour = #00FF00;
     textColour = #00FF00;
     theta = 0;
-    speed = 1;
-    power = true;
   }
   
-  Radar(float xPos, float yPos, float size, color colour, color textColour, float speed)
+  Radar(float xPos, float yPos, float size, color colour, color textColour)
   {
     this.xPos = xPos;
     this.yPos = yPos;
     this.size = size;
     this.colour = colour;
     this.textColour = textColour;
-    this.speed = speed;
-    
     theta = 0;
-    power = true;
   }
   
   Radar(float xPos, float yPos, float size)
@@ -39,11 +32,6 @@ class Radar
     this.xPos = xPos;
     this.yPos = yPos;
     this.size = size;
-  }
-  
-  void toggle()
-  {
-    power ^= true;
   }
   
   void display()
@@ -55,42 +43,42 @@ class Radar
     fill(0);
     stroke(91);
     strokeWeight(3);
-    rect(xPos, yPos, size, size);
     
-    if(power)
+    rect(radar.xPos, radar.yPos, radar.size, radar.size);
+    
+    float xOuter, yOuter;
+    
+    noFill();
+    strokeWeight(1);
+    
+    
+    
+    stroke(colour, 127);
+    line(xCentre, yCentre + size/2.1, xCentre, yCentre - size/2.1);
+    line(xCentre - size/2.1, yCentre, xCentre + size/2.1, yCentre);
+    
+    stroke(colour);
+    ellipse(xCentre, yCentre, size * 0.95, size * 0.95);
+    
+    strokeWeight(2);
+    for(float j = 0; j < 16; j += 0.5)
     {
-      float xOuter, yOuter;
-      
-      noFill();
+      xOuter = xCentre + ((size/2.1) * sin(theta - radians(j)));
+      yOuter = yCentre - ((size/2.1) * cos(theta - radians(j)));
+      line(xCentre, yCentre, xOuter, yOuter);
       strokeWeight(1);
-      
-      stroke(colour, 127);
-      line(xCentre, yCentre + size/2.1, xCentre, yCentre - size/2.1);
-      line(xCentre - size/2.1, yCentre, xCentre + size/2.1, yCentre);
-      
-      stroke(colour);
-      ellipse(xCentre, yCentre, size * 0.95, size * 0.95);
-      
-      strokeWeight(2);
-      for(float j = 0; j < 16; j += 0.5)
+      if(j % 4 == 0)
       {
-        xOuter = xCentre + ((size/2.1) * sin(theta - radians(j)));
-        yOuter = yCentre - ((size/2.1) * cos(theta - radians(j)));
-        line(xCentre, yCentre, xOuter, yOuter);
-        strokeWeight(1);
-        if(j % 4 == 0)
-        {
-          stroke(colour, 127);
-          ellipse(xCentre, yCentre, j * size/16, j * size/16);
-        }
-        stroke(colour, 127 - (8 * j));
+        stroke(colour, 127);
+        ellipse(xCentre, yCentre, j * size/16, j * size/16);
       }
-      theta += radians(speed);
+      stroke(colour, 127 - (8 * j));
     }
+    theta += radians(1);
   }
   
   String toString()
   {
-    return xPos + "\t" + yPos + "\t" + size + "\t" + colour + "\t" + textColour + "\t" + theta + "\t" + speed;
+    return xPos + "\t" + yPos + "\t" + size + "\t" + colour + "\t" + textColour + "\t" + theta;
   }
 }
