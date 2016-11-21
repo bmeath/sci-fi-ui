@@ -6,6 +6,7 @@ Button hyperdrive;
 float hyperspeed = 0;
 boolean inHyperspace = false;
 PVector[] stars = new PVector[1000];
+float windowBottom, windowTop;
 
 void setup()
 {
@@ -17,9 +18,14 @@ void setup()
   radarPower = new Button(0.7 * width, 0.85 * height, 48, "Radar", #303030, #FEA500, true);
   hyperdrive = new Button(0.35 * width, 0.93 * height, 48, "Warp", #303030, #00FFFF, false);
   
+  // height of space above and below window
+  windowBottom = 0.75 * height;
+  windowTop = 0.1 * height;
+  
   for(int i = 0; i < 1000; i++)
   {
-    stars[i] = new PVector(random(-width/2, width/2), random((0.1 * height) - height/2, (0.75 * height) - height/2));
+    // limit area to that of the window
+    stars[i] = new PVector(random(-width/2, width/2), random(windowTop - height/2, windowBottom - height/2));
   }
 
 }
@@ -47,7 +53,6 @@ void draw()
       // hyperdrive is off but we are still in hyperspace
       hyperspeed -= 0.5; // reduce speed
       inHyperspace = leaveHyperspace(hyperspeed);
-      
     }
     else
     {
@@ -146,7 +151,7 @@ boolean enterHyperspace(float hyperspeed)
 
 boolean leaveHyperspace(float hyperspeed)
 {
-  boolean offscreen = true;
+  boolean offscreen = false;
   stroke(#FFFFFF);
   strokeWeight(1);
 
@@ -158,11 +163,11 @@ boolean leaveHyperspace(float hyperspeed)
   {
     v = new PVector(s.x, s.y);
     v.div(v.mag());
-    line(s.x + (pow(1.15, hyperspeed) * v.x), s.y + (pow(1.15, hyperspeed) * v.y), s.x + (pow(1.25, hyperspeed) * v.x), s.y + (pow(1.25, hyperspeed) * v.y));
-    if( s.x + (pow(1.2, hyperspeed) * v.x) < width && s.x + (pow(1.2, hyperspeed) * v.x) > 0 )
+    line(s.x + (pow(1.25, hyperspeed) * v.x), s.y + (pow(1.25, hyperspeed) * v.y), s.x + (pow(1.15, hyperspeed) * v.x), s.y + (pow(1.15, hyperspeed) * v.y));
+    if( s.x + (pow(1.25, hyperspeed) * v.x) > width || s.x + (pow(1.25, hyperspeed) * v.x) < 0 )
     {
-      // there is at least one star still on screen, so hyperspace entry animination hasn't finished
-      offscreen = false;
+      // there is at least one star still off screen, so hyperspace exit animination hasn't finished
+      offscreen = true;
     }
   }
   popMatrix();
