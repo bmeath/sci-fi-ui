@@ -7,6 +7,7 @@ float hyperspeed = 0;
 boolean inHyperspace = false;
 PVector[] stars = new PVector[1000];
 float windowBottom, windowTop;
+float theta = 0;
 
 void setup()
 {
@@ -35,15 +36,22 @@ void draw()
   background(0);
   if(hyperdrive.state)
   {
-    if(inHyperspace)
-    {
-      //drawHyperspace();
-    }
-    else
+    if(!inHyperspace)
     {
       // hyperdrive is on but we aren't yet in hyperspace
       hyperspeed += 0.5; // increase speed
       inHyperspace = enterHyperspace(hyperspeed);
+      println(hyperspeed);
+      println(inHyperspace);
+    }
+    else
+    {
+      if(theta == 2 * PI)
+      {
+        theta = 0;
+      }
+      drawHyperspace(theta);
+      theta ++;
     }
   }
   else
@@ -53,6 +61,8 @@ void draw()
       // hyperdrive is off but we are still in hyperspace
       hyperspeed -= 0.5; // reduce speed
       inHyperspace = leaveHyperspace(hyperspeed);
+      println(hyperspeed);
+      println(inHyperspace);
     }
     else
     {
@@ -72,7 +82,7 @@ void draw()
   }
   radarPower.display();
   hyperdrive.display();
-  thermometer.display(map(hyperspeed, 0, 45, 0, 1500));
+  thermometer.display(hyperspeed * 50);
   
 }
 
@@ -86,6 +96,7 @@ void drawCockpit()
 {
   fill(127);
   stroke(91);
+  strokeWeight(5);
   
   beginShape();
   vertex(0,0);
@@ -125,52 +136,76 @@ void drawStars()
 
 boolean enterHyperspace(float hyperspeed)
 {
-  boolean offscreen = true;
+  float vStart, vEnd;
   stroke(#FFFFFF);
   strokeWeight(1);
 
   pushMatrix();
   translate(width/2, height/2);
-  hyperspeed = pow(1.2, hyperspeed);
   PVector v;
+  vStart = (pow(1.25, hyperspeed));
+  vEnd = (pow(1.3, hyperspeed));
+  background(vStart);
   for(PVector s: stars)
   {
-    v = new PVector(s.x, s.y);
-    v.div(v.mag());
-    line(s.x + (pow(1.15, hyperspeed) * v.x), s.y + (pow(1.15, hyperspeed) * v.y), s.x + (pow(1.25, hyperspeed) * v.x), s.y + (pow(1.25, hyperspeed) * v.y));
-    if( s.x + (pow(1.2, hyperspeed) * v.x) < width && s.x + (pow(1.2, hyperspeed) * v.x) > 0 )
-    {
-      // there is at least one star still on screen, so hyperspace entry animination hasn't finished
-      offscreen = false;
-    }
+    v = PVector.div(s, s.mag());   
+    line(s.x + (vStart * v.x), s.y + (vStart * v.y), s.x + (vEnd * v.x), s.y + (vEnd * v.y));    
   }
   popMatrix();
-  
-  return offscreen;
+   
+  if(vEnd >= width/2)
+  {
+    // there is at least one star still on screen, so hyperspace entry animination hasn't finished
+    return true;
+  }
+  return false;
+ 
 }
 
 boolean leaveHyperspace(float hyperspeed)
 {
-  boolean offscreen = false;
   stroke(#FFFFFF);
   strokeWeight(1);
 
   pushMatrix();
   translate(width/2, height/2);
-  hyperspeed = pow(1.2, hyperspeed);
   PVector v;
+  float vStart, vEnd;
+  vStart = (pow(1.25, hyperspeed));
+  vEnd = (pow(1.3, hyperspeed));
+  
+  background(vStart);
+  
   for(PVector s: stars)
   {
-    v = new PVector(s.x, s.y);
-    v.div(v.mag());
-    line(s.x + (pow(1.25, hyperspeed) * v.x), s.y + (pow(1.25, hyperspeed) * v.y), s.x + (pow(1.15, hyperspeed) * v.x), s.y + (pow(1.15, hyperspeed) * v.y));
-    if( s.x + (pow(1.25, hyperspeed) * v.x) > width || s.x + (pow(1.25, hyperspeed) * v.x) < 0 )
-    {
-      // there is at least one star still off screen, so hyperspace exit animination hasn't finished
-      offscreen = true;
-    }
+    v = PVector.div(s, s.mag());
+    line(s.x + (vEnd * v.x), s.y + (vEnd * v.y), s.x + (vStart * v.x), s.y + (vStart * v.y));
   }
   popMatrix();
-  
-  return offscreen;
+  if(hyperspeed <= 0)
+  {
+    // instead of checking each star's position, just see if we are back to normal speed
+    return false;
+  }
+  return true;
+}
+
+void drawHyperspace(float offset)
+{
+  background(255);
+  strokeWeight(2);
+  stroke(0);
+  float theta = offset, rad = width/2, x1, y1, x2, y2;
+  while(rad > 0)
+  {
+    x1 = (width/2) + (rad * sin(-theta));
+    y1 = (height/2) - (rad * cos(-theta));
+    x2 = (width/2) + ((rad + 200) * sin(-theta));
+    y2 = (height/2) -((rad + 200) * cos(-theta));
+    stroke(map(rad, 0, width/2, 255, 0));
+    
+    line(x1, y1, x2, y2);
+    rad -= 1.5;
+    theta += 0.125;
+  }
 }
