@@ -95,6 +95,6 @@ class CircularGauge extends Gauge
   
   String toString()
   {
-    return super.toString() + minorGrade;
+    return super.toString() + "\t" + minorGrade;
   }
 }

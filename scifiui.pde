@@ -1,3 +1,5 @@
+import processing.sound.*;
+
 CircularGauge speedometer;
 VerticalGauge thermometer;
 Radar radar;
@@ -8,6 +10,9 @@ boolean inHyperspace = false;
 PVector[] stars = new PVector[1000];
 float windowBottom, windowTop;
 float theta = 0;
+Gun gun;
+Pulse pulse;
+SqrOsc square;
 
 void setup()
 {
@@ -23,12 +28,21 @@ void setup()
   windowBottom = 0.75 * height;
   windowTop = 0.1 * height;
   
+  gun = new Gun(0.05 * width, 0.12 * height, #FF0000, 0.95 * width, 0.6 * height);
+  
   for(int i = 0; i < 1000; i++)
   {
     // limit area to that of the window
     stars[i] = new PVector(random(-width/2, width/2), random(windowTop - height/2, windowBottom - height/2));
   }
-
+  
+  pulse = new Pulse(this);
+  pulse.amp(0);
+  pulse.play();
+  
+  square = new SqrOsc(this);
+  square.amp(0);
+  square.play();
 }
 
 void draw()
@@ -36,13 +50,17 @@ void draw()
   background(0);
   if(hyperdrive.state)
   {
+    
     if(!inHyperspace)
     {
       // hyperdrive is on but we aren't yet in hyperspace
       hyperspeed += 0.5; // increase speed
       inHyperspace = enterHyperspace(hyperspeed);
-      println(hyperspeed);
-      println(inHyperspace);
+      pulse.freq(hyperspeed * 2);
+      pulse.amp(0.5);
+      square.freq(440 + hyperspeed * 3);
+      square.amp(0.25);
+      
     }
     else
     {
@@ -55,22 +73,40 @@ void draw()
     }
   }
   else
-  {    
+  {
     if(inHyperspace)
     {
+      
       // hyperdrive is off but we are still in hyperspace
       hyperspeed -= 0.5; // reduce speed
       inHyperspace = leaveHyperspace(hyperspeed);
-      println(hyperspeed);
-      println(inHyperspace);
+      pulse.freq(hyperspeed * 2);
+      square.freq(440 + hyperspeed * 3);
+      square.amp(0.25);
     }
     else
     {
       // back to normal
-      drawStars();
+      if(hyperspeed > 0)
+      {
+        // if hyperdrive was turned off while starting up
+        hyperspeed -= 0.5;
+        leaveHyperspace(hyperspeed);
+        pulse.freq(hyperspeed * 2);
+        square.freq(440 + hyperspeed * 3);
+        square.amp(0.25);
+      }
+      else
+      {
+        pulse.amp(0);
+        drawStars();
+      }
     }
   }
+  
+  gun.display(mouseX, mouseY);
   drawCockpit();
+  
   speedometer.display(5 + hyperspeed);
   if(radarPower.state)
   {
@@ -78,12 +114,15 @@ void draw()
   }
   else
   {
+    stroke(91);
+    fill(0);
     rect(radar.xPos, radar.yPos, radar.size, radar.size);
   }
   radarPower.display();
   hyperdrive.display();
   thermometer.display(hyperspeed * 50);
   
+  square.amp(0);
 }
 
 void mouseClicked()
@@ -145,7 +184,6 @@ boolean enterHyperspace(float hyperspeed)
   PVector v;
   vStart = (pow(1.25, hyperspeed));
   vEnd = (pow(1.3, hyperspeed));
-  background(vStart);
   for(PVector s: stars)
   {
     v = PVector.div(s, s.mag());   
@@ -174,8 +212,6 @@ boolean leaveHyperspace(float hyperspeed)
   vStart = (pow(1.25, hyperspeed));
   vEnd = (pow(1.3, hyperspeed));
   
-  background(vStart);
-  
   for(PVector s: stars)
   {
     v = PVector.div(s, s.mag());
@@ -184,7 +220,7 @@ boolean leaveHyperspace(float hyperspeed)
   popMatrix();
   if(hyperspeed <= 0)
   {
-    // instead of checking each star's position, just see if we are back to normal speed
+    // instead of checking every single star's position, just see if we are back to normal speed
     return false;
   }
   return true;
@@ -192,9 +228,8 @@ boolean leaveHyperspace(float hyperspeed)
 
 void drawHyperspace(float offset)
 {
-  background(255);
+  background(0);
   strokeWeight(2);
-  stroke(0);
   float theta = offset, rad = width/2, x1, y1, x2, y2;
   while(rad > 0)
   {
@@ -202,7 +237,7 @@ void drawHyperspace(float offset)
     y1 = (height/2) - (rad * cos(-theta));
     x2 = (width/2) + ((rad + 200) * sin(-theta));
     y2 = (height/2) -((rad + 200) * cos(-theta));
-    stroke(map(rad, 0, width/2, 255, 0));
+    stroke(map(rad, 0, width/2, 0, 255));
     
     line(x1, y1, x2, y2);
     rad -= 1.5;
