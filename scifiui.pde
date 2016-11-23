@@ -149,8 +149,7 @@ void mouseClicked()
 
 void drawCockpit()
 {
-  /* function to draw the interior of the spaceship
-  */
+  // function to draw the interior of the spaceship
   fill(127);
   stroke(91);
   strokeWeight(5);
@@ -196,23 +195,29 @@ boolean enterHyperspace(float hyperspeed)
   /* function to animate the transition into hyperspace
    * returns wether or not we are in hyperspace
    */
-  float vStart, vEnd;
+  float lStart, lEnd;
   stroke(#FFFFFF);
   strokeWeight(1);
 
   pushMatrix();
   translate(width/2, height/2);
   PVector v;
-  vStart = (pow(1.25, hyperspeed));
-  vEnd = (pow(1.3, hyperspeed));
+  
+  
+  lStart = (pow(1.25, hyperspeed)); // the 'tail' of the line is slower than the 'head'
+  lEnd = (pow(1.3, hyperspeed));
+  
+  /* extrapolate each star away from the centre
+   * motion is exponential
+   */
   for(PVector s: stars)
   {
-    v = PVector.div(s, s.mag());   
-    line(s.x + (vStart * v.x), s.y + (vStart * v.y), s.x + (vEnd * v.x), s.y + (vEnd * v.y));    
+    v = PVector.div(s, s.mag()); // the forward vector
+    line(s.x + (lStart * v.x), s.y + (lStart * v.y), s.x + (lEnd * v.x), s.y + (lEnd * v.y));    
   }
   popMatrix();
    
-  if(vEnd >= width/2)
+  if(lEnd >= width/2)
   {
     // there is at least one star still on screen, so hyperspace entry animination hasn't finished
     return true;
@@ -224,6 +229,7 @@ boolean enterHyperspace(float hyperspeed)
 boolean leaveHyperspace(float hyperspeed)
 {
   /* function to animate the transition out of hyperspace
+   * works like enterHyperspace in reverse
    * returns wether or not we are in hyperspace
    */
   stroke(#FFFFFF);
