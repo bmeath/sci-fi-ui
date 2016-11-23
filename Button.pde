@@ -48,6 +48,9 @@ class Button
   
   boolean checkPressed()
   {
+    /* function to detect a mouse click on this button, and change its state
+     * returns wether or not the mouse clicked on this button
+     */
     if((mouseX > xPos) && (mouseX < xPos + size) && (mouseY > yPos) && (mouseY < yPos + size/2))
     {
       state ^= true;

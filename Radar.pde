@@ -44,6 +44,7 @@ class Radar
     stroke(91);
     strokeWeight(3);
     
+    // black background
     rect(radar.xPos, radar.yPos, radar.size, radar.size);
     
     float xOuter, yOuter;
@@ -52,15 +53,18 @@ class Radar
     strokeWeight(1);
     
     
-    
+    // green cross
     stroke(colour, 127);
     line(xCentre, yCentre + size/2.1, xCentre, yCentre - size/2.1);
     line(xCentre - size/2.1, yCentre, xCentre + size/2.1, yCentre);
     
+    // outer-most circle
     stroke(colour);
     ellipse(xCentre, yCentre, size * 0.95, size * 0.95);
     
     strokeWeight(2);
+    
+    // concentric circles and the scan line
     for(float j = 0; j < 16; j += 0.5)
     {
       xOuter = xCentre + ((size/2.1) * sin(theta - radians(j)));
@@ -69,6 +73,7 @@ class Radar
       strokeWeight(1);
       if(j % 4 == 0)
       {
+        
         stroke(colour, 127);
         ellipse(xCentre, yCentre, j * size/16, j * size/16);
       }

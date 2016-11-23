@@ -44,6 +44,7 @@ class VerticalGauge extends Gauge
     textSize(size/14);
     textAlign(RIGHT);
     
+    // draw markings and label them
     for( float i = max; i >= min; i -= grade)
     {
       label = (i == (float)((int)i)) ? Integer.toString((int)i) : Float.toString(i); // remove trailing zeros

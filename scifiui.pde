@@ -14,7 +14,7 @@ float theta = 0;
 Gun gun;
 Pulse pulse;
 SqrOsc square;
-PVector[] nearby_objects[];
+PVector[] nearby_objects = new PVector[8];
 Polygon gunRange = new Polygon();
 
 void setup()
@@ -141,6 +141,7 @@ void draw()
 
 void mouseClicked()
 {
+  // check which of these objects have been clicked, if any
   radarPower.checkPressed();
   hyperdrive.checkPressed();
   gun.checkFired();
@@ -148,6 +149,8 @@ void mouseClicked()
 
 void drawCockpit()
 {
+  /* function to draw the interior of the spaceship
+  */
   fill(127);
   stroke(91);
   strokeWeight(5);
@@ -190,6 +193,9 @@ void drawStars()
 
 boolean enterHyperspace(float hyperspeed)
 {
+  /* function to animate the transition into hyperspace
+   * returns wether or not we are in hyperspace
+   */
   float vStart, vEnd;
   stroke(#FFFFFF);
   strokeWeight(1);
@@ -217,6 +223,9 @@ boolean enterHyperspace(float hyperspeed)
 
 boolean leaveHyperspace(float hyperspeed)
 {
+  /* function to animate the transition out of hyperspace
+   * returns wether or not we are in hyperspace
+   */
   stroke(#FFFFFF);
   strokeWeight(1);
 
@@ -235,7 +244,7 @@ boolean leaveHyperspace(float hyperspeed)
   popMatrix();
   if(hyperspeed <= 0)
   {
-    // instead of checking every single star's position, just see if we are back to normal speed
+    // instead of checking every single star's position, just check hyperspeed
     return false;
   }
   return true;
@@ -243,6 +252,8 @@ boolean leaveHyperspace(float hyperspeed)
 
 void drawHyperspace(float offset)
 {
+  /* function to animate hyperspace travel
+   */
   background(0);
   strokeWeight(2);
   float theta = offset, rad = width/2, x1, y1, x2, y2;

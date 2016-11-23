@@ -46,7 +46,7 @@ abstract class Gauge
     this.textColour = textColour;
   }
   
-  abstract void display();
+  abstract void display(); // contains a call to display passing this.reading
   
   abstract void display(float val);
   
@@ -64,7 +64,7 @@ abstract class Gauge
     this.reading = val;
   }
   
-  float read()
+  float read() // get the value that the gauge reads
   {
     return this.reading;
   }
