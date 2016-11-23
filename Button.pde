@@ -46,7 +46,7 @@ class Button
     ellipse(xPos + (0.85 * size), yPos + (0.15 * size), size/15, size/15);
   }
   
-  boolean pressed()
+  boolean checkPressed()
   {
     if((mouseX > xPos) && (mouseX < xPos + size) && (mouseY > yPos) && (mouseY < yPos + size/2))
     {

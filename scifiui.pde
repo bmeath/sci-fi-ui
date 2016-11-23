@@ -1,4 +1,5 @@
 import processing.sound.*;
+import java.awt.Polygon;
 
 CircularGauge speedometer;
 VerticalGauge thermometer;
@@ -13,6 +14,8 @@ float theta = 0;
 Gun gun;
 Pulse pulse;
 SqrOsc square;
+PVector[] nearby_objects[];
+Polygon gunRange = new Polygon();
 
 void setup()
 {
@@ -27,8 +30,19 @@ void setup()
   // height of space above and below window
   windowBottom = 0.75 * height;
   windowTop = 0.1 * height;
+  stroke(255);
+  gunRange.addPoint(0, (int)(0.15 * height));
+  gunRange.addPoint((int)(0.1 * width), (int)(0.15 * height));
+  gunRange.addPoint((int)(0.2 * width), (int)(0.1 * height));
+  gunRange.addPoint((int)(0.8 * width), (int)(0.1 * height));
+  gunRange.addPoint((int)(0.9 * width), (int)(0.15 * height));
+  gunRange.addPoint(width, (int)(0.15 * height));
+  gunRange.addPoint(width, (int)(0.75 * height));
+  gunRange.addPoint((int)(0.85 * width), (int)(0.6 * height));
+  gunRange.addPoint((int)(0.15 * width), (int)(0.6 * height));
+  gunRange.addPoint(0, (int)(0.75 * height));
   
-  gun = new Gun(0.05 * width, 0.12 * height, #FF0000, 0.95 * width, 0.6 * height);
+  gun = new Gun(gunRange,#FF0000);
   
   for(int i = 0; i < 1000; i++)
   {
@@ -64,6 +78,7 @@ void draw()
     }
     else
     {
+      square.amp(0);
       if(theta == 2 * PI)
       {
         theta = 0;
@@ -98,6 +113,7 @@ void draw()
       }
       else
       {
+        square.amp(0);
         pulse.amp(0);
         drawStars();
       }
@@ -121,14 +137,13 @@ void draw()
   radarPower.display();
   hyperdrive.display();
   thermometer.display(hyperspeed * 50);
-  
-  square.amp(0);
 }
 
 void mouseClicked()
 {
-  radarPower.pressed();
-  hyperdrive.pressed();
+  radarPower.checkPressed();
+  hyperdrive.checkPressed();
+  gun.checkFired();
 }
 
 void drawCockpit()
