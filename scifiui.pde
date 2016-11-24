@@ -17,7 +17,7 @@ Space space;
 void setup()
 {
   size(1280, 720);
-  space = new Space(1000);
+  
   speedometer = new CircularGauge(0.5 * width - 150/2, 0.63 * height, 150, "Velocity", "x1000\nkm/h", 0, 25, 5, 1, #FF0000, #FFFFFF, #0000FF);
   thermometer = new VerticalGauge(0.04 * width, 0.75 * height, 150, "Temperature", "Deg. C", 0, 1500, 250, #FF0000, #FFFFFF, #FFFFFF);
   radar = new Radar(0.7 * width, 0.63 * height, 150);
@@ -39,6 +39,7 @@ void setup()
   windowArea.addPoint((int)(0.15 * width), (int)(0.6 * height));
   windowArea.addPoint(0, (int)(0.75 * height));
   
+  space = new Space(1000, windowArea);
   gun = new Gun(windowArea,#FF0000);
   
   
@@ -52,9 +53,9 @@ void draw()
   space.display(hyperdrive.state);
   
   gun.display(mouseX, mouseY);
-  drawCockpit();
+  drawCockpit(windowArea);
   
-  speedometer.display(5 + space.hyperspeed);
+  speedometer.display(space.hyperspeed);
   if(radarPower.state)
   {
     radar.display();
@@ -78,7 +79,8 @@ void mouseClicked()
   gun.checkFired();
 }
 
-void drawCockpit()
+
+void drawCockpit(Polygon window)
 {
   // function to draw the interior of the spaceship
   fill(127);
@@ -86,23 +88,21 @@ void drawCockpit()
   strokeWeight(5);
   
   beginShape();
-  vertex(0,0);
-  vertex(0, 0.15 * height);
-  vertex(0.1 * width, 0.15 * height);
-  vertex(0.2 * width, 0.1 * height);
-  vertex(0.8 * width, 0.1 * height);
-  vertex(0.9 * width, 0.15 * height);
-  vertex(width, 0.15 * height);
-  vertex(width, 0);
-  endShape();
+  // convert Polygon to PShape and 'invert' it
+  for(int i = 0; i < window.npoints; i++)
+  {
+    vertex(window.xpoints[i], window.ypoints[i]);
+  }
   
-  beginShape();
-  vertex(0,height);
-  vertex(0, 0.75 * height);
-  vertex(0.15 * width, 0.6 * height);
-  vertex(0.85 * width, 0.6 * height);
-  vertex(width, 0.75 * height);
+  /* a bit of a hack:
+   * adding each corner of the screen in this order
+   * will give me the shape of the area surrounding the window.
+   * this order doesn't for all shapes, unfortunately
+   */
+  vertex(0, height);
   vertex(width, height);
-  endShape();
+  vertex(width, 0);
+  vertex(0, 0);
   
+  endShape();
 }
