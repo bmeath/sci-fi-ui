@@ -5,6 +5,7 @@ class Space
   boolean inHyperspace;
   Pulse pulse;
   Polygon area;
+  Rectangle bounds;
   
   
   Space(int numStars, Polygon area)
@@ -17,14 +18,44 @@ class Space
     pulse = new Pulse(scifiui.this);
     pulse.amp(0);
     pulse.play();
+    
+    bounds = this.area.getBounds();
+    int xMax = bounds.x + bounds.width;
+    int yMax = bounds.y + bounds.height;
+    
+    println("x range: " + bounds.x + ", " + xMax);
+    println("y range: " + bounds.y + ", " + yMax);
+    
     for(int i = 0; i < 1000; i++)
     {
-      stars[i] = new PVector(random(-width/2, width/2), random(-height/2,height/2));
+      stars[i] = new PVector(random(bounds.x, xMax), random(bounds.y, yMax));
+      if(!this.area.contains(stars[i].x, stars[i].y))
+      {
+        i--;
+      }
     }
+    
+    
   }
   
   void display(boolean hyperdrive)
   {
+    pushMatrix();
+    translate(width/2, height/2);
+    
+    beginShape();
+    fill(0);
+    noStroke();
+    strokeWeight(5);
+    // convert Polygon points to PShape vertices
+    for(int i = 0; i < area.npoints; i++)
+    {
+      vertex(area.xpoints[i], area.ypoints[i]);
+    }
+    endShape();
+    
+    stroke(255);
+    
     if(hyperdrive)
     {
       
@@ -53,6 +84,7 @@ class Space
         space.drawNormal();
       }
     }
+    popMatrix();
   }
   
   void drawNormal()
@@ -60,14 +92,14 @@ class Space
     pulse.amp(0);
     stroke(#FFFFFF);
     strokeWeight(1);
-    pushMatrix();
-    translate(width/2, height/2);
     
     for(PVector s: stars)
     {
-      point(s.x, s.y);
+      if(area.contains(s.x, s.y))
+      {
+        point(s.x, s.y);
+      }
     } 
-    popMatrix();
   }
   
   void enterHyperspace()
@@ -78,17 +110,12 @@ class Space
     hyperspeed += 0.5; // increase speed
     pulse.freq(space.hyperspeed * 2);
     pulse.amp(0.5);
-    float lStart, lEnd;
-    stroke(#FFFFFF);
-    strokeWeight(1);
-  
-    pushMatrix();
-    translate(width/2, height/2);
+    
     PVector v;
     
-    
-    lStart = (pow(1.25, hyperspeed)); // the 'tail' of the line is slower than the 'head'
-    lEnd = (pow(1.3, hyperspeed));
+    float lStart = (pow(1.25, hyperspeed)); // the 'tail' of the line is slower than the 'head'
+    float lEnd = (pow(1.3, hyperspeed));
+    float xOuter, yOuter;
     
     /* extrapolate each star away from the centre
      * motion is exponential
@@ -97,9 +124,13 @@ class Space
     {
       v = PVector.div(s, s.mag()); // the forward vector
       strokeWeight(map(s.mag(), 0, width/2, 1, 4));
-      line(s.x + (lStart * v.x), s.y + (lStart * v.y), s.x + (lEnd * v.x), s.y + (lEnd * v.y));    
+      xOuter = s.x + (lEnd * v.x);
+      yOuter = s.y + (lEnd * v.y);
+      if(area.contains(xOuter, yOuter))
+      {
+        line(s.x + (lStart * v.x), s.y + (lStart * v.y), xOuter, yOuter);
+      }
     }
-    popMatrix();
      
     if(lEnd >= width/2)
     {
@@ -121,22 +152,26 @@ class Space
     hyperspeed -= 0.5; // reduce speed
     pulse.amp(0.5);
     pulse.freq(hyperspeed * 2);
-    stroke(#FFFFFF);
-    strokeWeight(1);
   
-    pushMatrix();
-    translate(width/2, height/2);
     PVector v;
-    float vStart, vEnd;
-    vStart = (pow(1.25, hyperspeed));
-    vEnd = (pow(1.3, hyperspeed));
+    float lStart = (pow(1.25, hyperspeed));
+    float lEnd = (pow(1.3, hyperspeed));
+    float xOuter, yOuter;
     
     for(PVector s: stars)
     {
-      v = PVector.div(s, s.mag());
-      line(s.x + (vEnd * v.x), s.y + (vEnd * v.y), s.x + (vStart * v.x), s.y + (vStart * v.y));
+      //v = PVector.div(s, s.mag());
+      v = PVector.div(s, s.mag()); // the forward vector
+      strokeWeight(map(s.mag(), 0, width/2, 1, 4));
+      xOuter = s.x + (lEnd * v.x);
+      yOuter = s.y + (lEnd * v.y);
+      while(!area.contains(xOuter, yOuter))
+      {
+        xOuter -= v.x;
+        yOuter -= v.y;
+      }
+      line(s.x + (lStart * v.x), s.y + (lStart * v.y), xOuter, yOuter);
     }
-    popMatrix();
     if(hyperspeed <= 0)
     {
       // instead of checking every single star's position, just check hyperspeed
@@ -154,22 +189,22 @@ class Space
      */
      pulse.amp(0);
      
-     pushMatrix();
-     
-     translate(width/2, height/2);
      for(int i = 0; i < 1000; i++)
      {
-       //if(stars[i].x < -(width/2) || stars[i].x > width/2 || stars[i].y < (-height/2) || stars[i].y > (height/2))
-       if(!area.contains(stars[i].x, stars[i].y))
+       if(!bounds.contains(stars[i].x, stars[i].y))
        {
          stars[i] = new PVector( random(-50, 50), random(-50, 50));
        }
        stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), 15));
+       if(area.contains(stars[i].x, stars[i].y))
+       {
+         strokeWeight(map(stars[i].mag(), 0, width/2, 1, 4));
+         point(stars[i].x, stars[i].y);
+       }
        //stars[i].rotate(0.025);
-       strokeWeight(map(stars[i].mag(), 0, width/2, 1, 4));
-       point(stars[i].x, stars[i].y);
+       
      }
-     popMatrix();
+     
      
   }
   

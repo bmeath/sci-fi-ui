@@ -1,17 +1,17 @@
 import processing.sound.*;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 
 CircularGauge speedometer;
 VerticalGauge thermometer;
 Radar radar;
 Button radarPower;
 Button hyperdrive;
-float windowBottom, windowTop;
 Gun gun;
 
 PVector[] nearby_objects = new PVector[8];
 
-Polygon windowArea = new Polygon();
+Polygon window = new Polygon();
 Space space;
 
 void setup()
@@ -24,38 +24,33 @@ void setup()
   radarPower = new Button(0.7 * width, 0.85 * height, 48, "Radar", #303030, #FEA500, true);
   hyperdrive = new Button(0.35 * width, 0.93 * height, 48, "Warp", #303030, #00FFFF, false);
   
-  // height of space above and below window
-  windowBottom = 0.75 * height;
-  windowTop = 0.1 * height;
+  window.addPoint(0, (int)(0.15 * height));
+  window.addPoint((int)(0.1 * width), (int)(0.15 * height));
+  window.addPoint((int)(0.2 * width), (int)(0.1 * height));
+  window.addPoint((int)(0.8 * width), (int)(0.1 * height));
+  window.addPoint((int)(0.9 * width), (int)(0.15 * height));
+  window.addPoint(width, (int)(0.15 * height));
+  window.addPoint(width, (int)(0.75 * height));
+  window.addPoint((int)(0.85 * width), (int)(0.6 * height));
+  window.addPoint((int)(0.15 * width), (int)(0.6 * height));
+  window.addPoint(0, (int)(0.75 * height));
   
-  windowArea.addPoint(0, (int)(0.15 * height));
-  windowArea.addPoint((int)(0.1 * width), (int)(0.15 * height));
-  windowArea.addPoint((int)(0.2 * width), (int)(0.1 * height));
-  windowArea.addPoint((int)(0.8 * width), (int)(0.1 * height));
-  windowArea.addPoint((int)(0.9 * width), (int)(0.15 * height));
-  windowArea.addPoint(width, (int)(0.15 * height));
-  windowArea.addPoint(width, (int)(0.75 * height));
-  windowArea.addPoint((int)(0.85 * width), (int)(0.6 * height));
-  windowArea.addPoint((int)(0.15 * width), (int)(0.6 * height));
-  windowArea.addPoint(0, (int)(0.75 * height));
-  
-  space = new Space(1000, windowArea);
-  gun = new Gun(windowArea,#FF0000);
-  
-  
-  
+  space = new Space(1000, window);
+  gun = new Gun(window,#FF0000);
   
 }
 
 void draw()
 {
-  background(0);
+  background(127);
   space.display(hyperdrive.state);
-  
   gun.display(mouseX, mouseY);
-  drawCockpit(windowArea);
   
   speedometer.display(space.hyperspeed);
+  radarPower.display();
+  hyperdrive.display();
+  thermometer.display(space.hyperspeed * 50);
+  
   if(radarPower.state)
   {
     radar.display();
@@ -66,9 +61,6 @@ void draw()
     fill(0);
     rect(radar.xPos, radar.yPos, radar.size, radar.size);
   }
-  radarPower.display();
-  hyperdrive.display();
-  thermometer.display(space.hyperspeed * 50);
 }
 
 void mouseClicked()
@@ -77,32 +69,4 @@ void mouseClicked()
   radarPower.checkPressed();
   hyperdrive.checkPressed();
   gun.checkFired();
-}
-
-
-void drawCockpit(Polygon window)
-{
-  // function to draw the interior of the spaceship
-  fill(127);
-  stroke(91);
-  strokeWeight(5);
-  
-  beginShape();
-  // convert Polygon to PShape and 'invert' it
-  for(int i = 0; i < window.npoints; i++)
-  {
-    vertex(window.xpoints[i], window.ypoints[i]);
-  }
-  
-  /* a bit of a hack:
-   * adding each corner of the screen in this order
-   * will give me the shape of the area surrounding the window.
-   * this order doesn't for all shapes, unfortunately
-   */
-  vertex(0, height);
-  vertex(width, height);
-  vertex(width, 0);
-  vertex(0, 0);
-  
-  endShape();
 }
