@@ -42,9 +42,10 @@ void setup()
 
 void draw()
 {
-  background(127);
+  background(91);
   space.display(hyperdrive.state);
   gun.display(mouseX, mouseY);
+  
   
   speedometer.display(space.hyperspeed);
   radarPower.display();

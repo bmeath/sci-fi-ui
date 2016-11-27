@@ -1,5 +1,6 @@
 class VerticalGauge extends Gauge
 {
+  
   VerticalGauge()
   {
     super();
@@ -10,7 +11,7 @@ class VerticalGauge extends Gauge
     super(xPos, yPos, size, title, unit, min, max, grade, pointerColour, graduationColour, textColour);
   }
   
-  void display() // allows calling display without any arguments
+  void display() // allows calling display without any arguments and assumes this.reading as the argument to pass
   {
     display(reading);
   }
@@ -54,12 +55,10 @@ class VerticalGauge extends Gauge
     
     textAlign(CENTER, TOP);
     text(unit, xPos + w/2, yPos + h);
-    
-    
   }
-}
 
-String toString()
-{
-  return super.toString();
+  String toString()
+  {
+    return super.toString();
+  }
 }

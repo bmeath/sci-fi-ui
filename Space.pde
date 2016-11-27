@@ -20,22 +20,16 @@ class Space
     pulse.play();
     
     bounds = this.area.getBounds();
-    int xMax = bounds.x + bounds.width;
-    int yMax = bounds.y + bounds.height;
-    
-    println("x range: " + bounds.x + ", " + xMax);
-    println("y range: " + bounds.y + ", " + yMax);
     
     for(int i = 0; i < 1000; i++)
     {
-      stars[i] = new PVector(random(bounds.x, xMax), random(bounds.y, yMax));
+      stars[i] = new PVector(random(bounds.x, bounds.width), random(bounds.y, bounds.height));
       if(!this.area.contains(stars[i].x, stars[i].y))
       {
+        // there is small chance of this condition occuring
         i--;
       }
     }
-    
-    
   }
   
   void display(boolean hyperdrive)
@@ -87,22 +81,28 @@ class Space
     popMatrix();
   }
   
-  void drawNormal()
+  private void drawNormal()
   {
     pulse.amp(0);
-    stroke(#FFFFFF);
-    strokeWeight(1);
     
-    for(PVector s: stars)
-    {
-      if(area.contains(s.x, s.y))
-      {
-        point(s.x, s.y);
-      }
-    } 
+   for(int i = 0; i < 1000; i++)
+   {
+     if(!bounds.contains(stars[i].x, stars[i].y))
+     {
+       stars[i] = new PVector( random(-100, 100), random(-100, 100));
+       
+     }
+     stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), 5));
+     if(area.contains(stars[i].x, stars[i].y))
+     {
+       strokeWeight(map(stars[i].mag(), 0, width/2, 1, 4));
+       point(stars[i].x, stars[i].y);
+     }
+     
+   }
   }
   
-  void enterHyperspace()
+  private void enterHyperspace()
   {
     /* function to animate the transition into hyperspace
      * returns wether or not we are in hyperspace
@@ -126,10 +126,12 @@ class Space
       strokeWeight(map(s.mag(), 0, width/2, 1, 4));
       xOuter = s.x + (lEnd * v.x);
       yOuter = s.y + (lEnd * v.y);
+      
       if(area.contains(xOuter, yOuter))
       {
         line(s.x + (lStart * v.x), s.y + (lStart * v.y), xOuter, yOuter);
       }
+      
     }
      
     if(lEnd >= width/2)
@@ -143,7 +145,7 @@ class Space
     }
   }
   
-  void leaveHyperspace()
+  private void leaveHyperspace()
   {
     /* function to animate the transition out of hyperspace
      * works like enterHyperspace in reverse
@@ -160,17 +162,15 @@ class Space
     
     for(PVector s: stars)
     {
-      //v = PVector.div(s, s.mag());
       v = PVector.div(s, s.mag()); // the forward vector
       strokeWeight(map(s.mag(), 0, width/2, 1, 4));
       xOuter = s.x + (lEnd * v.x);
       yOuter = s.y + (lEnd * v.y);
-      while(!area.contains(xOuter, yOuter))
+      if(area.contains(xOuter, yOuter))
       {
-        xOuter -= v.x;
-        yOuter -= v.y;
+        line(s.x + (lStart * v.x), s.y + (lStart * v.y), xOuter, yOuter);
       }
-      line(s.x + (lStart * v.x), s.y + (lStart * v.y), xOuter, yOuter);
+      
     }
     if(hyperspeed <= 0)
     {
@@ -183,25 +183,26 @@ class Space
     }
   }
   
-  void drawHyperspace()
+  private void drawHyperspace()
   {
     /* function to animate hyperspace travel
      */
+     
      pulse.amp(0);
      
      for(int i = 0; i < 1000; i++)
      {
        if(!bounds.contains(stars[i].x, stars[i].y))
        {
-         stars[i] = new PVector( random(-50, 50), random(-50, 50));
+         stars[i] = new PVector( random(-100, 100), random(-100, 100));
+         
        }
-       stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), 15));
+       stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), 5));
        if(area.contains(stars[i].x, stars[i].y))
        {
          strokeWeight(map(stars[i].mag(), 0, width/2, 1, 4));
          point(stars[i].x, stars[i].y);
        }
-       //stars[i].rotate(0.025);
        
      }
      
@@ -215,4 +216,12 @@ class Space
      */
     return inHyperspace;
   }
+  
+  String toString()
+  {
+    return stars + "\t" + hyperspeed;
+  boolean inHyperspace;
+  Pulse pulse;
+  Polygon area;
+  Rectangle bounds;
 }

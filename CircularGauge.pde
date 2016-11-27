@@ -15,7 +15,7 @@ class CircularGauge extends Gauge
     this.minorGrade = minorGrade;
   }
   
-  void display()
+  void display() // allows calling display without any arguments and assumes this.reading as the argument to pass
   {
     display(reading);
   }
