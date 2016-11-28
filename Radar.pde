@@ -84,9 +84,19 @@ class Radar
     theta += radians(1);
   }
   
-  void loadEnemies(String enemyData)
+  void showEnemies()
   {
     
+  }
+  
+  void loadEnemies(String enemyData)
+  {
+    Table tfile = loadTable(enemyData, "header");
+    for (TableRow row : tfile.rows())
+    {
+      Enemy e = new Enemy(row.getString("Name"), row.getFloat("Speed"), row.getFloat("Size"));
+      enemies.add(e);
+    }
   }
   
   String toString()
