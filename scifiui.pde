@@ -11,8 +11,6 @@ Button lightSwitch;
 Gun gun;
 float timeDelta = 1/60;
 
-PVector[] nearby_objects = new PVector[8];
-
 Polygon window = new Polygon();
 Space space;
 

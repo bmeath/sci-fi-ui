@@ -16,9 +16,10 @@ class Radar
     textColour = #00FF00;
     theta = 0;
     enemies = new ArrayList<Enemy>();
+    loadEnemies(enemyData);
   }
   
-  Radar(float xPos, float yPos, float size, color colour, color textColour)
+  Radar(float xPos, float yPos, float size, color colour, color textColour, String enemyData)
   {
     this.xPos = xPos;
     this.yPos = yPos;
@@ -26,6 +27,7 @@ class Radar
     this.colour = colour;
     this.textColour = textColour;
     theta = 0;
+    loadEnemies(enemyData);
   }
   
   Radar(float xPos, float yPos, float size, String enemyData)
@@ -82,6 +84,11 @@ class Radar
       stroke(colour, 127 - (8 * j));
     }
     theta += radians(1);
+    
+    for(Enemy e : enemies)
+    {
+      e.display();
+    }
   }
   
   void showEnemies()
@@ -94,7 +101,7 @@ class Radar
     Table tfile = loadTable(enemyData, "header");
     for (TableRow row : tfile.rows())
     {
-      Enemy e = new Enemy(row.getString("Name"), row.getFloat("Speed"), row.getFloat("Size"));
+      Enemy e = new Enemy(row.getString("Name"), row.getFloat("Speed"), row.getFloat("Size"), xPos + size/2, yPos + size/2, size);
       enemies.add(e);
     }
   }
