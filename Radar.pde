@@ -7,7 +7,7 @@ class Radar
   float theta;
   ArrayList<Enemy> enemies;
   
-  Radar(String enemyData)
+  Radar()
   {
     xPos = 100;
     yPos = 150;
@@ -15,8 +15,7 @@ class Radar
     colour = #00FF00;
     textColour = #00FF00;
     theta = 0;
-    enemies = new ArrayList<Enemy>();
-    loadEnemies(enemyData);
+    enemies = new ArrayList<Enemy>();    
   }
   
   Radar(float xPos, float yPos, float size, color colour, color textColour, String enemyData)
@@ -33,10 +32,11 @@ class Radar
   
   Radar(float xPos, float yPos, float size, String enemyData)
   {
-    this(enemyData);
+    this();
     this.xPos = xPos;
     this.yPos = yPos;
     this.size = size;
+    loadEnemies(enemyData);
   }
   
   void display()
@@ -89,9 +89,11 @@ class Radar
     
     for(Enemy e : enemies)
     {
-      e.display();
+      if(dist(e.pos.x, e.pos.y, xCentre, yCentre) < size/2) // check if enemy is within range of radar
+      {
+        e.display();
+      }
     }
-    println(this.toString());
   }
   
   void loadEnemies(String enemyData)
@@ -99,7 +101,8 @@ class Radar
     Table tfile = loadTable(enemyData, "header");
     for (TableRow row : tfile.rows())
     {
-      Enemy e = new Enemy(row.getString("Name"), row.getFloat("Speed"), row.getFloat("Size"), xPos + size/2, yPos + size/2, size);
+      println(this.toString());
+      Enemy e = new Enemy(row.getString("Name"), row.getFloat("Speed"), row.getFloat("Size"), xPos + size/2, yPos + size/2, size/2);
       enemies.add(e);
     }
   }
