@@ -49,11 +49,11 @@ void setup()
 
 void draw()
 {
-  background(lightSwitch.state ? 91 : 31);
+  background(lightSwitch.state ? 56 : 0);
   space.display(hyperdrive.state);
   gun.display(mouseX, mouseY);
   
-  speedometer.display(hyperdrive.state ? speedometer.max : speed);
+  speedometer.display(hyperdrive.state ? random(speedometer.min, speedometer.max) : speed);
   radarPower.display();
   hyperdrive.display();
   thermometer.display(space.hyperspeed * 50);
@@ -88,6 +88,12 @@ void mouseClicked()
       radar.enemies.clear();
     }
   }
+  for(Enemy e : radar.enemies)
+  {
+    if(e.checkPressed())
+    {
+      enemyInfoScreen.update(e);
+    }  }
   gun.checkFired();
   lightSwitch.checkPressed();
   

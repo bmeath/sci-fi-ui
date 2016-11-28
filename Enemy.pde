@@ -14,7 +14,7 @@ class Enemy
     centreY = radCentreY;
     pos = new PVector(random(radCentreX - radRadius, radCentreX + radRadius), random(radCentreY - radRadius, radCentreY + radRadius));
     //pos = PVector.fromAngle(random(2 * PI));
-    pos.setMag(random(radRadius));
+    //pos.setMag(random(radRadius));
     
     this.name = name;
     this.speed = speed;
@@ -23,12 +23,9 @@ class Enemy
   
   void display()
   {
-    pushMatrix();
-    translate(centreX, centreY);
     strokeWeight(map(size, 1, 10, 2, 8));
     stroke(#FFFF00);
     point(pos.x, pos.y);
-    popMatrix();
   }
   
   boolean checkPressed()

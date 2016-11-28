@@ -14,6 +14,7 @@ abstract class Gauge
   color graduationColour; // colour of the graduations/markings
   color textColour; // colour of unit name and numbers beside markings
   float reading; // value which the pointer will indicate
+  SoundFile warning;
   
   Gauge()
   {

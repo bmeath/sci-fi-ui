@@ -39,7 +39,7 @@ class Space
     translate(width/2, height/2);
     
     beginShape();
-    fill(inHyperspace & hyperdrive ? #0900A0 : 0);
+    fill(inHyperspace & hyperdrive ? #55027f : 0);
     noStroke();
     strokeWeight(5);
     // convert Polygon points to PShape vertices
