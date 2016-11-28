@@ -3,6 +3,7 @@ class Space
   PVector stars[];
   float hyperspeed;
   boolean inHyperspace;
+  float speed;
   Pulse pulse;
   Polygon area;
   Rectangle bounds;
@@ -18,6 +19,7 @@ class Space
     pulse = new Pulse(scifiui.this);
     pulse.amp(0);
     pulse.play();
+    speed = 0;
     
     bounds = this.area.getBounds();
     
@@ -38,7 +40,7 @@ class Space
     translate(width/2, height/2);
     
     beginShape();
-    fill(0);
+    fill(inHyperspace ? #0900A0 : 0);
     noStroke();
     strokeWeight(5);
     // convert Polygon points to PShape vertices
@@ -87,11 +89,14 @@ class Space
     
    for(int i = 0; i < 1000; i++)
    {
-     if(!bounds.contains(stars[i].x, stars[i].y))
+     if(speed != 0)
      {
-       stars[i] = new PVector( random(-100, 100), random(-100, 100));  
+       if(!bounds.contains(stars[i].x, stars[i].y))
+       {
+         stars[i] = new PVector( random(-100, 100), random(-100, 100));  
+       }
+       stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), 5));
      }
-     stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), 5));
      if(area.contains(stars[i].x, stars[i].y))
      {
        strokeWeight(map(stars[i].mag(), 0, width/2, 1, 4));
