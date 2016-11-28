@@ -7,7 +7,9 @@ VerticalGauge thermometer;
 Radar radar;
 Button radarPower;
 Button hyperdrive;
+Button lightSwitch;
 Gun gun;
+float timeDelta = 1/60;
 
 PVector[] nearby_objects = new PVector[8];
 
@@ -37,12 +39,12 @@ void setup()
   
   space = new Space(1000, window);
   gun = new Gun(window,#FF0000);
-  
+  lightSwitch = new Button(0.95 * width, 0.05 * height, 48, "Light", #303030, #FEA500, true);
 }
 
 void draw()
 {
-  background(91);
+  background(lightSwitch.state ? 91 : 31);
   space.display(hyperdrive.state);
   gun.display(mouseX, mouseY);
   
@@ -51,6 +53,7 @@ void draw()
   radarPower.display();
   hyperdrive.display();
   thermometer.display(space.hyperspeed * 50);
+  lightSwitch.display();
   
   if(radarPower.state)
   {
@@ -70,4 +73,5 @@ void mouseClicked()
   radarPower.checkPressed();
   hyperdrive.checkPressed();
   gun.checkFired();
+  lightSwitch.checkPressed();
 }

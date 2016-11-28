@@ -2,20 +2,20 @@ class Gun
 {
   color colour;
   Polygon range;
-  SawOsc pew = new SawOsc(scifiui.this);
+  SoundFile pew; 
   float expansion; // to make the aimer expand and contract
   float cornerX;
   float cornerY;
   float cornerSize;
+  ArrayList<Laser> laserShots;
   
   Gun(Polygon range, color colour)
   {
     this.range = range;
     this.colour = colour;
-    pew.amp(0);
-    pew.play();
     expansion = 0;
     cornerSize = height/100;
+    pew = new SoundFile(scifiui.this, "pew.wav"); // source https://www.freesound.org/people/TheGeekRanger/sounds/273497/
   }
    
   void display(float xCentre, float yCentre)
@@ -57,20 +57,18 @@ class Gun
       line(xCentre - cornerSize, yCentre, xCentre + cornerSize, yCentre);
       line(xCentre, yCentre + cornerSize, xCentre, yCentre - cornerSize);
     }
+    for(Laser l: laserShots)
+    {
+      l.display();
+    }
   }
   
   boolean checkFired()
   {
     if(range.contains(mouseX, mouseY))
     {
-      
-      pew.amp(0.5);
-      for(int i = 750; i > 100; i -= 25)
-      {
-        pew.freq(i);
-      }
-      pew.amp(0);
-      return true;
+        pew.play();
+        return true;
     }
     return false;
   }

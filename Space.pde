@@ -219,9 +219,6 @@ class Space
   
   String toString()
   {
-    return stars + "\t" + hyperspeed;
-  boolean inHyperspace;
-  Pulse pulse;
-  Polygon area;
-  Rectangle bounds;
+    return stars + "\t" + hyperspeed + "\t" + inHyperspace + "\t" + pulse + "\t" + area + "\t" + bounds;
+  }
 }
