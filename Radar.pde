@@ -86,7 +86,7 @@ class Radar
     {
       if(dist(e.pos.x, e.pos.y, xCentre, yCentre) < size/2) // check if enemy is within range of radar
       {
-        if(PVector.angleBetween(PVector.fromAngle(0), e.pos) > theta )
+        if(e.pos.heading() < theta )
         {
           e.display();
         }

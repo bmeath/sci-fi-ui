@@ -12,11 +12,13 @@ class Enemy
   {
     centreX = radCentreX;
     centreY = radCentreY;
-    pos = new PVector(random(-radRadius, radRadius), random(-radRadius, radRadius));
+    pos = new PVector(random(radCentreX - radRadius, radCentreX + radRadius), random(radCentreY - radRadius, radCentreY + radRadius));
+    //pos = PVector.fromAngle(random(2 * PI));
+    pos.setMag(random(radRadius));
+    
     this.name = name;
     this.speed = speed;
     this.size = size;
-    
   }
   
   void display()
