@@ -65,7 +65,10 @@ class Gun
     {
       if(range.contains(laserShots.get(i).pos.x, laserShots.get(i).pos.y))
       {
-        laserShots.get(i).display();
+        if(laserShots.get(i).size > 1)
+        {
+          laserShots.get(i).display();
+        }
       }
       else
       {
