@@ -53,15 +53,12 @@ void draw()
   thermometer.display(space.hyperspeed * 50);
   lightSwitch.display();
   
+  stroke(91);
+  fill(0);
+  rect(radar.xPos, radar.yPos, radar.size, radar.size);
   if(radarPower.state)
   {
     radar.display();
-  }
-  else
-  {
-    stroke(91);
-    fill(0);
-    rect(radar.xPos, radar.yPos, radar.size, radar.size);
   }
 }
 

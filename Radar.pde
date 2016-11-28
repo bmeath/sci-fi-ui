@@ -27,6 +27,7 @@ class Radar
     this.colour = colour;
     this.textColour = textColour;
     theta = 0;
+    enemies = new ArrayList<Enemy>();
     loadEnemies(enemyData);
   }
   
@@ -47,9 +48,6 @@ class Radar
     fill(0);
     stroke(91);
     strokeWeight(3);
-    
-    // black background
-    rect(radar.xPos, radar.yPos, radar.size, radar.size);
     
     float xOuter, yOuter;
     
@@ -84,16 +82,16 @@ class Radar
       stroke(colour, 127 - (8 * j));
     }
     theta += radians(1);
+    if(theta >= 2 * PI)
+    {
+      theta = 0;
+    }
     
     for(Enemy e : enemies)
     {
       e.display();
     }
-  }
-  
-  void showEnemies()
-  {
-    
+    println(this.toString());
   }
   
   void loadEnemies(String enemyData)
