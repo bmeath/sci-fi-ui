@@ -101,7 +101,6 @@ class Radar
     Table tfile = loadTable(enemyData, "header");
     for (TableRow row : tfile.rows())
     {
-      println(this.toString());
       Enemy e = new Enemy(row.getString("Name"), row.getFloat("Speed"), row.getFloat("Size"), xPos + size/2, yPos + size/2, size/2);
       enemies.add(e);
     }

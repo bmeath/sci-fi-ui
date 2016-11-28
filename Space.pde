@@ -6,6 +6,7 @@ class Space
   Pulse pulse;
   Polygon area;
   Rectangle bounds;
+  float theta;
   
   
   Space(int numStars, Polygon area)
@@ -38,7 +39,7 @@ class Space
     translate(width/2, height/2);
     
     beginShape();
-    fill(inHyperspace ? #0900A0 : 0);
+    fill(inHyperspace & hyperdrive ? #0900A0 : 0);
     noStroke();
     strokeWeight(5);
     // convert Polygon points to PShape vertices
@@ -49,6 +50,26 @@ class Space
     endShape();
     
     stroke(255);
+    
+    if (checkKey('w'))
+    {
+      if(speed < 25)
+      {
+        speed += 0.1; 
+      }
+    }
+    
+    if (checkKey('s'))
+    {
+      if(speed > 0)
+      {
+        speed -= 0.1;
+      }
+      if(speed <= 0)
+      {
+        speed = 0;
+      }
+    }
     
     if(hyperdrive)
     {
@@ -93,7 +114,7 @@ class Space
        {
          stars[i] = new PVector( random(-100, 100), random(-100, 100));  
        }
-       stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), 5));
+       stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), speed));
      }
      if(area.contains(stars[i].x, stars[i].y))
      {
@@ -198,10 +219,10 @@ class Space
          stars[i] = new PVector( random(-100, 100), random(-100, 100));
          
        }
-       stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), 5));
+       stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), 50));
        if(area.contains(stars[i].x, stars[i].y))
        {
-         strokeWeight(map(stars[i].mag(), 0, width/2, 1, 4));
+         strokeWeight(map(stars[i].mag(), 0, width/2, 2, 6));
          point(stars[i].x, stars[i].y);
        } 
      }    

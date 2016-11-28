@@ -9,6 +9,8 @@ Button radarPower;
 Button hyperdrive;
 Button lightSwitch;
 Gun gun;
+boolean[] keys = new boolean[1000];
+//Slider throttle;
 float timeDelta = 1/60;
 float speed = 0;
 
@@ -24,6 +26,7 @@ void setup()
   radar = new Radar(0.7 * width, 0.63 * height, 150, "enemies.csv");
   radarPower = new Button(0.7 * width, 0.85 * height, 48, "Radar", #303030, #FEA500, true);
   hyperdrive = new Button(0.35 * width, 0.93 * height, 48, "Warp", #303030, #00FFFF, false); 
+  //throttle = new Slider(0.25 * width, 0.7 * height, 0.15 * width, "Throttle");
   
   window.addPoint(0, (int)(0.15 * height));
   window.addPoint((int)(0.1 * width), (int)(0.15 * height));
@@ -52,6 +55,7 @@ void draw()
   hyperdrive.display();
   thermometer.display(space.hyperspeed * 50);
   lightSwitch.display();
+  //throttle.display();
   
   stroke(91);
   fill(0);
@@ -60,13 +64,41 @@ void draw()
   {
     radar.display();
   }
+  
 }
+
+/*void mouseDragged()
+{
+  throttle.checkPressed();
+}*/
 
 void mouseClicked()
 {
   // check which of these objects have been clicked, if any
   radarPower.checkPressed();
-  hyperdrive.checkPressed();
+  if(hyperdrive.checkPressed())
+  {
+    radar.enemies.clear();
+  }
   gun.checkFired();
   lightSwitch.checkPressed();
+  
+}
+
+void keyPressed()
+{ 
+  keys[keyCode] = true;
+}
+ 
+void keyReleased()
+{
+  keys[keyCode] = false; 
+}
+boolean checkKey(int k)
+{
+  if (keys.length >= k) 
+  {
+    return keys[k] || keys[Character.toUpperCase(k)];  
+  }
+  return false;
 }

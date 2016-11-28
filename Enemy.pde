@@ -12,7 +12,6 @@ class Enemy
     this.name = name;
     this.speed = speed;
     this.size = size;
-    
   }
   
   void display()
@@ -20,6 +19,15 @@ class Enemy
     strokeWeight(map(size, 1, 10, 2, 8));
     stroke(#FFFF00);
     point(pos.x, pos.y);
+  }
+  
+  boolean checkPressed()
+  {
+    if((mouseX > pos.x - size/2) && (mouseX < pos.x + size/2) && (mouseY > pos.y - size/2) && (mouseY < pos.y + size/2))
+    {
+      return true;
+    }
+    return false;
   }
   
   String toString()
