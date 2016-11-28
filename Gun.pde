@@ -1,5 +1,6 @@
 class Gun
 {
+  PVector pos;
   color colour;
   Polygon range;
   SoundFile pew; 
@@ -9,12 +10,15 @@ class Gun
   float cornerSize;
   ArrayList<Laser> laserShots;
   
-  Gun(Polygon range, color colour)
+  
+  Gun(float xPos, float yPos, Polygon range, color colour)
   {
+    this.pos = new PVector(xPos, yPos);
     this.range = range;
     this.colour = colour;
     expansion = 0;
     cornerSize = height/100;
+    laserShots = new ArrayList<Laser>();
     pew = new SoundFile(scifiui.this, "pew.wav"); // source https://www.freesound.org/people/TheGeekRanger/sounds/273497/
   }
    
@@ -59,7 +63,14 @@ class Gun
     }
     for(Laser l: laserShots)
     {
-      l.display();
+      if(range.contains(l.pos.x, l.pos.y))
+      {
+        l.display();
+      }
+      else
+      {
+        laserShots.remove(l);
+      }
     }
   }
   
@@ -68,6 +79,8 @@ class Gun
     if(range.contains(mouseX, mouseY))
     {
         pew.play();
+        Laser l = new Laser(pos, mouseX, mouseY, #00FF00);
+        laserShots.add(l);
         return true;
     }
     return false;

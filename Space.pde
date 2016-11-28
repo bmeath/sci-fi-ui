@@ -89,8 +89,7 @@ class Space
    {
      if(!bounds.contains(stars[i].x, stars[i].y))
      {
-       stars[i] = new PVector( random(-100, 100), random(-100, 100));
-       
+       stars[i] = new PVector( random(-100, 100), random(-100, 100));  
      }
      stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), 5));
      if(area.contains(stars[i].x, stars[i].y))
@@ -98,7 +97,6 @@ class Space
        strokeWeight(map(stars[i].mag(), 0, width/2, 1, 4));
        point(stars[i].x, stars[i].y);
      }
-     
    }
   }
   
@@ -202,11 +200,8 @@ class Space
        {
          strokeWeight(map(stars[i].mag(), 0, width/2, 1, 4));
          point(stars[i].x, stars[i].y);
-       }
-       
-     }
-     
-     
+       } 
+     }    
   }
   
   boolean inHyperspace()

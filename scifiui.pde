@@ -38,7 +38,7 @@ void setup()
   window.addPoint(0, (int)(0.75 * height));
   
   space = new Space(1000, window);
-  gun = new Gun(window,#FF0000);
+  gun = new Gun(0.5 * width, 0.6 * height, window,#FF0000);
   lightSwitch = new Button(0.95 * width, 0.05 * height, 48, "Light", #303030, #FEA500, true);
 }
 
