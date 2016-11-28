@@ -10,6 +10,7 @@ Button hyperdrive;
 Button lightSwitch;
 Gun gun;
 float timeDelta = 1/60;
+float speed = 0;
 
 Polygon window = new Polygon();
 Space space;
@@ -46,8 +47,7 @@ void draw()
   space.display(hyperdrive.state);
   gun.display(mouseX, mouseY);
   
-  
-  speedometer.display(space.hyperspeed);
+  speedometer.display(hyperdrive.state ? speedometer.max : speed);
   radarPower.display();
   hyperdrive.display();
   thermometer.display(space.hyperspeed * 50);

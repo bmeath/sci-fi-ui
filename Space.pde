@@ -3,7 +3,6 @@ class Space
   PVector stars[];
   float hyperspeed;
   boolean inHyperspace;
-  float speed;
   Pulse pulse;
   Polygon area;
   Rectangle bounds;
@@ -19,7 +18,6 @@ class Space
     pulse = new Pulse(scifiui.this);
     pulse.amp(0);
     pulse.play();
-    speed = 0;
     
     bounds = this.area.getBounds();
     
