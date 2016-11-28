@@ -5,8 +5,9 @@ class Radar
   color colour;
   color textColour;
   float theta;
+  ArrayList<Enemy> enemies;
   
-  Radar()
+  Radar(String enemyData)
   {
     xPos = 100;
     yPos = 150;
@@ -14,6 +15,7 @@ class Radar
     colour = #00FF00;
     textColour = #00FF00;
     theta = 0;
+    enemies = new ArrayList<Enemy>();
   }
   
   Radar(float xPos, float yPos, float size, color colour, color textColour)
@@ -26,9 +28,9 @@ class Radar
     theta = 0;
   }
   
-  Radar(float xPos, float yPos, float size)
+  Radar(float xPos, float yPos, float size, String enemyData)
   {
-    this();
+    this(enemyData);
     this.xPos = xPos;
     this.yPos = yPos;
     this.size = size;
@@ -80,6 +82,11 @@ class Radar
       stroke(colour, 127 - (8 * j));
     }
     theta += radians(1);
+  }
+  
+  void loadEnemies(String enemyData)
+  {
+    
   }
   
   String toString()

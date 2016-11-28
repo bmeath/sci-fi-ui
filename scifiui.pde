@@ -24,7 +24,7 @@ void setup()
   thermometer = new VerticalGauge(0.04 * width, 0.75 * height, 150, "Temperature", "Deg. C", 0, 1500, 250, #FF0000, #FFFFFF, #FFFFFF);
   radar = new Radar(0.7 * width, 0.63 * height, 150);
   radarPower = new Button(0.7 * width, 0.85 * height, 48, "Radar", #303030, #FEA500, true);
-  hyperdrive = new Button(0.35 * width, 0.93 * height, 48, "Warp", #303030, #00FFFF, false);
+  hyperdrive = new Button(0.35 * width, 0.93 * height, 48, "Warp", #303030, #00FFFF, false); 
   
   window.addPoint(0, (int)(0.15 * height));
   window.addPoint((int)(0.1 * width), (int)(0.15 * height));
