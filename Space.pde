@@ -73,7 +73,6 @@ class Space
     
     if(hyperdrive)
     {
-      
       if(!inHyperspace)
       {
         // hyperdrive is on but we aren't yet in hyperspace

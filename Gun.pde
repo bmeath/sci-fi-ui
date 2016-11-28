@@ -61,7 +61,7 @@ class Gun
       line(xCentre - cornerSize, yCentre, xCentre + cornerSize, yCentre);
       line(xCentre, yCentre + cornerSize, xCentre, yCentre - cornerSize);
     }
-    for(int i = 0; i < laserShots.size(); i++)
+    for(int i = laserShots.size()-1; i >= 0; i--)
     {
       if(range.contains(laserShots.get(i).pos.x, laserShots.get(i).pos.y))
       {

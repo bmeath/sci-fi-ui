@@ -5,20 +5,28 @@ class Enemy
   /* size and speed are assumed to be on a scale of 1-10 */
   float speed;
   float size;
+  float centreX;
+  float centreY;
   
   Enemy(String name, float speed, float size, float radCentreX, float radCentreY, float radRadius)
   {
-    pos = new PVector(random(radCentreX - radRadius, radCentreX + radRadius), random(radCentreY - radRadius, radCentreY + radRadius));
+    centreX = radCentreX;
+    centreY = radCentreY;
+    pos = new PVector(random(-radRadius, radRadius), random(-radRadius, radRadius));
     this.name = name;
     this.speed = speed;
     this.size = size;
+    
   }
   
   void display()
   {
+    pushMatrix();
+    translate(centreX, centreY);
     strokeWeight(map(size, 1, 10, 2, 8));
     stroke(#FFFF00);
     point(pos.x, pos.y);
+    popMatrix();
   }
   
   boolean checkPressed()

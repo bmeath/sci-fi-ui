@@ -75,24 +75,27 @@ class Radar
       strokeWeight(1);
       if(j % 4 == 0)
       {
-        
         stroke(colour, 127);
         ellipse(xCentre, yCentre, j * size/16, j * size/16);
       }
       stroke(colour, 127 - (8 * j));
     }
-    theta += radians(1);
-    if(theta >= 2 * PI)
-    {
-      theta = 0;
-    }
+    
     
     for(Enemy e : enemies)
     {
       if(dist(e.pos.x, e.pos.y, xCentre, yCentre) < size/2) // check if enemy is within range of radar
       {
-        e.display();
+        if(PVector.angleBetween(PVector.fromAngle(0), e.pos) > theta )
+        {
+          e.display();
+        }
       }
+    }
+    theta += radians(1);
+    if(theta >= 2 * PI)
+    {
+      theta = 0;
     }
   }
   
