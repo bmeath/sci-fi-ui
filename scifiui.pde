@@ -13,7 +13,6 @@ SoundFile clickSound; // source: https://www.freesound.org/people/josepharaoh99/
 SoundFile warpSound; // source: https://www.freesound.org/people/Fantozzi/sounds/163077/
 SoundFile stopwarpSound; // source: https://www.freesound.org/people/LittleRobotSoundFactory/sounds/270553/
 boolean[] keys = new boolean[1000];
-Slider throttle;
 float timeDelta = 1/60;
 float speed = 0;
 enemyInfo enemyInfoScreen;
@@ -32,7 +31,6 @@ void setup()
   radar = new Radar(0.7 * width, 0.63 * height, 150, "enemies.csv");
   radarPower = new Button(0.7 * width, 0.85 * height, 48, "Radar", #303030, #FEA500, true);
   hyperdrive = new Button(0.47 * width, 0.95 * height, 64, "Warp", #303030, #00FFFF, false); 
-  throttle = new Slider(0.25 * width, 0.7 * height, 0.15 * width, "Throttle");
   enemyInfoScreen = new enemyInfo(0.2 * width, 0.63 * height, width/6);
   
   window.addPoint(0, (int)(0.15 * height));
@@ -62,7 +60,6 @@ void draw()
   hyperdrive.display();
   thermometer.display(space.hyperspeed * 50);
   lightSwitch.display();
-  //throttle.display();
   enemyInfoScreen.display();
   
   stroke(91);

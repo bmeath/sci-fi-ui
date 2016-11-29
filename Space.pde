@@ -31,6 +31,7 @@ class Space
         i--;
       }
     }
+    theta = 0;
   }
   
   void display(boolean hyperdrive)
@@ -216,7 +217,6 @@ class Space
        if(!bounds.contains(stars[i].x, stars[i].y))
        {
          stars[i] = new PVector( random(-100, 100), random(-100, 100));
-         
        }
        stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), 50));
        if(area.contains(stars[i].x, stars[i].y))
@@ -224,7 +224,8 @@ class Space
          strokeWeight(map(stars[i].mag(), 0, width/2, 2, 6));
          point(stars[i].x, stars[i].y);
        } 
-     }    
+     }
+     theta += radians(1);
   }
   
   boolean inHyperspace()
