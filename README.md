@@ -11,4 +11,5 @@ Made for my second year semester 1 Programming assignment.
 * to slow down press S
 * all other control is done using the mouse
 
-### Demo video  
+### Demonstration
+[![Video](http://img.youtube.com/vi/tqGtfsXNPng/0.jpg)](http://www.youtube.com/watch?v=tqGtfsXNPng)
