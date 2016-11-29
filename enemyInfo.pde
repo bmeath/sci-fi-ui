@@ -26,9 +26,16 @@ class enemyInfo
     textSize(size/12);
     text("Nearby Spacecraft\nStatistics", xPos + size/20, yPos + 0.1 * size);
     textSize(size/16);
-    text("Name: " + enemyName, xPos + size/20, yPos + 0.35 * size);
-    text("Length: " + enemySize + "m", xPos + size/20, yPos + 0.55* size);
-    text("Speed: " + enemySpeed + "x1000 km/h", xPos + size/20, yPos + 0.75 * size);
+    if(enemyName != "")
+    {
+      text("Name: " + enemyName, xPos + size/20, yPos + 0.35 * size);
+      text("Length: " + enemySize + "m", xPos + size/20, yPos + 0.55* size);
+      text("Speed: " + enemySpeed + "x1000 km/h", xPos + size/20, yPos + 0.75 * size);
+    }
+    else
+    {
+       text("Select a ship\npicked up by the radar\nto view information about it." + enemyName, xPos + size/20, yPos + 0.35 * size);
+    }
   }
  
   void update(Enemy e)

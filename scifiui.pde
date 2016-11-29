@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 CircularGauge speedometer;
 CircularGauge fuel;
 VerticalGauge thermometer;
+VerticalGauge co2Gauge;
 Radar radar;
 Button radarPower;
 Button hyperdrive;
@@ -26,6 +27,8 @@ void setup()
 {
   size(1280, 720);
   compass = new Compass(0.48 * width, 0.008 * height, 64, 0);
+  co2Gauge = new VerticalGauge(0.12 * width, 0.75 * height, 150, "CO2 Level", "mg/L", 0, 20000, 2000, #FF0000, #FFFFFF, #FFFFFF);
+  co2Gauge.measure(500);
   clickSound = new SoundFile(scifiui.this, "click.mp3");
   warpSound = new SoundFile(scifiui.this, "warp.wav");
   stopwarpSound = new SoundFile(scifiui.this, "stopwarp.wav");
@@ -51,7 +54,7 @@ void setup()
   
   space = new Space(1000, window);
   gun = new Gun(0.5 * width, 0.59 * height, window,#FF0000);
-  lightSwitch = new Button(0.95 * width, 0.05 * height, 48, "Light", #303030, #FEA500, true);
+  lightSwitch = new Button(0.7 * width, 0.05 * height, 48, "Light", #303030, #FEA500, true);
 }
 
 void draw()
@@ -61,6 +64,7 @@ void draw()
   gun.display(mouseX, mouseY);
   
   compass.display(space.theta);
+  co2Gauge.display();
   speedometer.display(hyperdrive.state ? random(speedometer.min, speedometer.max) : shipSpeed);
   fuel.display();
   radarPower.display();
@@ -152,6 +156,4 @@ void drawVent(float x, float y, float w, float h)
   {
     line(x + w/10, y + i * h, x + 0.9 * w, y + i * h);
   }
-  
-  
 }

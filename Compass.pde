@@ -29,11 +29,11 @@ class Compass
     
     stroke(#FF0000);
     //triangle(centre.x - size/15, centre.y, centre.x + size/15, centre.y, centre.x + size/2 * sin(theta), centre.y + size/2 * -cos(theta));
-    line(centre.x, centre.y, centre.x + size/3 * sin(theta), centre.y + size/3 * -cos(theta));
+    line(centre.x, centre.y, centre.x + size/3 * sin(-theta), centre.y + size/3 * -cos(-theta));
     
     stroke(#0000FF);
     //triangle(centre.x - size/15, centre.y, centre.x + size/15, centre.y, centre.x + size/2 * sin(theta + radians(180)), centre.y + size/2 * -cos(theta + radians(180)));
-    line(centre.x, centre.y, centre.x + size/3 * sin(theta + radians(180)), centre.y + size/3 * -cos(theta + radians(180)));
+    line(centre.x, centre.y, centre.x + size/3 * sin(-theta + radians(180)), centre.y + size/3 * -cos(-theta + radians(180)));
     
     fill(255);
     textSize(10);
