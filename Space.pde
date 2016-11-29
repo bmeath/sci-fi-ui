@@ -54,21 +54,21 @@ class Space
     
     if (checkKey('w'))
     {
-      if(speed < 25)
+      if(shipSpeed < 25)
       {
-        speed += 0.1; 
+        shipSpeed += 0.1; 
       }
     }
     
     if (checkKey('s'))
     {
-      if(speed > 0)
+      if(shipSpeed > 0)
       {
-        speed -= 0.1;
+        shipSpeed -= 0.1;
       }
-      if(speed <= 0)
+      if(shipSpeed <= 0)
       {
-        speed = 0;
+        shipSpeed = 0;
       }
     }
     
@@ -108,13 +108,13 @@ class Space
     
    for(int i = 0; i < 1000; i++)
    {
-     if(speed != 0)
+     if(shipSpeed != 0)
      {
        if(!bounds.contains(stars[i].x, stars[i].y))
        {
          stars[i] = new PVector( random(-100, 100), random(-100, 100));  
        }
-       stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), speed));
+       stars[i].add(PVector.mult(PVector.div(stars[i], stars[i].mag()), shipSpeed));
      }
      if(area.contains(stars[i].x, stars[i].y))
      {

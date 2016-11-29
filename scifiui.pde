@@ -14,7 +14,7 @@ SoundFile warpSound; // source: https://www.freesound.org/people/Fantozzi/sounds
 SoundFile stopwarpSound; // source: https://www.freesound.org/people/LittleRobotSoundFactory/sounds/270553/
 boolean[] keys = new boolean[1000];
 float timeDelta = 1/60;
-float speed = 0;
+float shipSpeed = 0;
 enemyInfo enemyInfoScreen;
 
 Polygon window = new Polygon();
@@ -55,7 +55,7 @@ void draw()
   space.display(hyperdrive.state);
   gun.display(mouseX, mouseY);
   
-  speedometer.display(hyperdrive.state ? random(speedometer.min, speedometer.max) : speed);
+  speedometer.display(hyperdrive.state ? random(speedometer.min, speedometer.max) : shipSpeed);
   radarPower.display();
   hyperdrive.display();
   thermometer.display(space.hyperspeed * 50);
@@ -90,6 +90,7 @@ void mouseClicked()
     }
     else
     {
+      radar.loadEnemies("enemies.csv");
       stopwarpSound.play();
     }
   }

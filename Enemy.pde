@@ -6,19 +6,22 @@ class Enemy
   float speed;
   float size;
   float realSize;
+  float realSpeed;
   
   Enemy(String name, float speed, float size, float radCentreX, float radCentreY, float radRadius)
   {
-    //pos = new PVector(random(radCentreX - radRadius, radCentreX + radRadius), random(radCentreY - radRadius, radCentreY + radRadius));
-    pos = new PVector(radCentreX + random(radRadius) * sin(random(2 * PI)), radCentreY + random(radRadius) * random(2 * PI));
+    pos = new PVector(radCentreX + random(radRadius) * sin(random(2 * PI)), radCentreY + random(radRadius) * -cos(random(2 * PI)));
     this.name = name;
     this.speed = speed;
     this.size = size;
     realSize = map(size, 5, 5000, 3, 20);
+    realSpeed = map(this.speed, 0, 25, 0, 0.025);
   }
   
   void display()
   {
+    pos.add(PVector.mult(PVector.fromAngle(map(noise(pos.x, pos.y), 0, 1, -1, 1) * 2 * PI), realSpeed));
+    pos.y += (shipSpeed / speedometer.max) * 0.1;
     strokeWeight(realSize);
     stroke(#FFFF00);
     point(pos.x, pos.y);
@@ -35,6 +38,6 @@ class Enemy
   
   String toString()
   {
-    return pos.toString() + "\t" + name + "\t" + speed + "\t" + size + "\t" + realSize;
+    return pos.toString() + "\t" + name + "\t" + speed + "\t" + size + "\t" + realSize + "\t" + realSpeed;
   }
 }

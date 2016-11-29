@@ -87,8 +87,7 @@ class Radar
       if(dist(e.pos.x, e.pos.y, xCentre, yCentre) < size/2) // check if enemy is within range of radar
       {
         e.display();
-        e.pos.add(PVector.div(PVector.fromAngle(map(noise(e.pos.x, e.pos.y), 0, 1, -1, 1) * 2 * PI), 10));
-        e.pos.y += speed/speedometer.max;
+        
       }
     }
     theta += radians(1);
