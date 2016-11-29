@@ -25,7 +25,7 @@ Space space;
 void setup()
 {
   size(1280, 720);
-  compass = new Compass(0.85 * width, 0.02 * height, 80, 0);
+  compass = new Compass(0.48 * width, 0.008 * height, 64, 0);
   clickSound = new SoundFile(scifiui.this, "click.mp3");
   warpSound = new SoundFile(scifiui.this, "warp.wav");
   stopwarpSound = new SoundFile(scifiui.this, "stopwarp.wav");
@@ -56,11 +56,11 @@ void setup()
 
 void draw()
 {
-  background(lightSwitch.state ? 56 : 0);
+  drawInterior();
   space.display(hyperdrive.state);
   gun.display(mouseX, mouseY);
   
-  compass.display();
+  compass.display(space.theta);
   speedometer.display(hyperdrive.state ? random(speedometer.min, speedometer.max) : shipSpeed);
   fuel.display();
   radarPower.display();
@@ -132,4 +132,26 @@ boolean checkKey(int k)
     return keys[k] || keys[Character.toUpperCase(k)];
   }
   return false;
+}
+
+void drawInterior()
+{
+  background(lightSwitch.state ? 56 : 0);
+  drawVent(0.015 * width, 0.025 * height, 100, 60);
+  drawVent(0.907 * width, 0.025 * height, 100, 60);
+}
+
+void drawVent(float x, float y, float w, float h)
+{
+  noStroke();
+  fill(lightSwitch.state ? 127 : 31);
+  rect(x, y, w, h);
+  strokeWeight(2);
+  stroke(91);
+  for(float i = 0.2; i < 1; i += 0.2)
+  {
+    line(x + w/10, y + i * h, x + 0.9 * w, y + i * h);
+  }
+  
+  
 }

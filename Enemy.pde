@@ -14,7 +14,7 @@ class Enemy
     this.name = name;
     this.speed = speed;
     this.size = size;
-    realSize = map(size, 5, 5000, 3, 20);
+    realSize = map(size, 5, 5000, 6, 20);
     realSpeed = map(this.speed, 0, 25, 0, 0.025);
   }
   

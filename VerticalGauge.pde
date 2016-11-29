@@ -55,6 +55,9 @@ class VerticalGauge extends Gauge
     
     textAlign(CENTER, TOP);
     text(unit, xPos + w/2, yPos + h);
+    
+    textAlign(CENTER, TOP);
+    text(title, xPos + w/2, yPos - h/8);
   }
 
   String toString()

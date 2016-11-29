@@ -82,7 +82,7 @@ class Space
           stars[i].x = -width/2;
           stars[i].y = random(bounds.y, bounds.height);
         }
-        stars[i].x ++;
+        stars[i].x += 4;
       }
     }
     
@@ -96,7 +96,7 @@ class Space
           stars[i].x = width/2;
           stars[i].y = random(bounds.y, bounds.height);
         }
-        stars[i].x --;
+        stars[i].x -= 4;
       }
     }
     
