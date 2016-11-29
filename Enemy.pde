@@ -22,12 +22,14 @@ class Enemy
   {
     
     pos.add(PVector.mult(PVector.fromAngle(map(noise(pos.x, pos.y), 0, 1, -1, 1) * 2 * PI), realSpeed));
-    pos.y += (shipSpeed / speedometer.max) * 0.1;
+    
     strokeWeight(realSize);
     stroke(#FFFF00);
+    pos.y += (shipSpeed / speedometer.max) * 0.1 * cos(space.theta);
     pushMatrix();
     translate(radar.xPos + radar.size/2, radar.yPos + radar.size/2);
     rotate(space.theta);
+    
     PVector p = new PVector(pos.x - (radar.xPos + radar.size/2), (pos.y - (radar.yPos + radar.size/2)));
     point(p.x, p.y);
     popMatrix();

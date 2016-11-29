@@ -45,7 +45,7 @@ class Radar
     float h = size;
     float xCentre = xPos + w/2;
     float yCentre = yPos + h/2;
-    fill(0);
+    fill(0);  
     stroke(91);
     strokeWeight(3);
     

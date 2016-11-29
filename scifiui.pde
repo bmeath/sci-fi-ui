@@ -18,18 +18,20 @@ float timeDelta = 1/60;
 float shipSpeed = 0;
 enemyInfo enemyInfoScreen;
 String enemyInfoFile = "enemies.csv";
-
+Compass compass;
 Polygon window = new Polygon();
 Space space;
 
 void setup()
 {
   size(1280, 720);
+  compass = new Compass(0.85 * width, 0.02 * height, 80, 0);
   clickSound = new SoundFile(scifiui.this, "click.mp3");
   warpSound = new SoundFile(scifiui.this, "warp.wav");
   stopwarpSound = new SoundFile(scifiui.this, "stopwarp.wav");
   speedometer = new CircularGauge(0.5 * width - 150/2, 0.63 * height, 150, "Velocity", "x1000\nkm/h", 0, 25, 5, 1, #FF0000, #FFFFFF, #0000FF);
-  fuel = new CircularGauge(0.1 * width, 0.1 * height, 100, "Fuel", "L", 0, 10000, 2500, 500, #FF0000, #FFFFFF, #0000FF);
+  fuel = new CircularGauge(0.87 * width, 0.75 * height, 125, "Fuel", "Litres", 0, 10000, 2500, 500, #FF0000, #FFFFFF, #FFFF00);
+  fuel.measure(9000);
   thermometer = new VerticalGauge(0.04 * width, 0.75 * height, 150, "Temperature", "Deg. C", 0, 1500, 250, #FF0000, #FFFFFF, #FFFFFF);
   radar = new Radar(0.7 * width, 0.63 * height, 150, enemyInfoFile);
   radarPower = new Button(0.7 * width, 0.85 * height, 48, "Radar", #303030, #FEA500, true);
@@ -58,6 +60,7 @@ void draw()
   space.display(hyperdrive.state);
   gun.display(mouseX, mouseY);
   
+  compass.display();
   speedometer.display(hyperdrive.state ? random(speedometer.min, speedometer.max) : shipSpeed);
   fuel.display();
   radarPower.display();
