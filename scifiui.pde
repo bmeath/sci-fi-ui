@@ -3,6 +3,7 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 
 CircularGauge speedometer;
+CircularGauge fuel;
 VerticalGauge thermometer;
 Radar radar;
 Button radarPower;
@@ -16,6 +17,7 @@ boolean[] keys = new boolean[1000];
 float timeDelta = 1/60;
 float shipSpeed = 0;
 enemyInfo enemyInfoScreen;
+String enemyInfoFile = "enemies.csv";
 
 Polygon window = new Polygon();
 Space space;
@@ -27,8 +29,9 @@ void setup()
   warpSound = new SoundFile(scifiui.this, "warp.wav");
   stopwarpSound = new SoundFile(scifiui.this, "stopwarp.wav");
   speedometer = new CircularGauge(0.5 * width - 150/2, 0.63 * height, 150, "Velocity", "x1000\nkm/h", 0, 25, 5, 1, #FF0000, #FFFFFF, #0000FF);
+  fuel = new CircularGauge(0.1 * width, 0.1 * height, 100, "Fuel", "L", 0, 10000, 2500, 500, #FF0000, #FFFFFF, #0000FF);
   thermometer = new VerticalGauge(0.04 * width, 0.75 * height, 150, "Temperature", "Deg. C", 0, 1500, 250, #FF0000, #FFFFFF, #FFFFFF);
-  radar = new Radar(0.7 * width, 0.63 * height, 150, "enemies.csv");
+  radar = new Radar(0.7 * width, 0.63 * height, 150, enemyInfoFile);
   radarPower = new Button(0.7 * width, 0.85 * height, 48, "Radar", #303030, #FEA500, true);
   hyperdrive = new Button(0.47 * width, 0.95 * height, 64, "Warp", #303030, #00FFFF, false); 
   enemyInfoScreen = new enemyInfo(0.2 * width, 0.63 * height, width/6);
@@ -56,6 +59,7 @@ void draw()
   gun.display(mouseX, mouseY);
   
   speedometer.display(hyperdrive.state ? random(speedometer.min, speedometer.max) : shipSpeed);
+  fuel.display();
   radarPower.display();
   hyperdrive.display();
   thermometer.display(space.hyperspeed * 50);
@@ -90,7 +94,7 @@ void mouseClicked()
     }
     else
     {
-      radar.loadEnemies("enemies.csv");
+      radar.loadEnemies(enemyInfoFile);
       stopwarpSound.play();
     }
   }
@@ -122,7 +126,7 @@ boolean checkKey(int k)
 {
   if (keys.length >= k) 
   {
-    return keys[k] || keys[Character.toUpperCase(k)];  
+    return keys[k] || keys[Character.toUpperCase(k)];
   }
   return false;
 }

@@ -72,6 +72,34 @@ class Space
       }
     }
     
+    if (checkKey('a'))
+    {
+      theta += radians(1);
+      for(int i = 0; i < 1000; i++)
+      {
+        if(stars[i].x > width/2)
+        {
+          stars[i].x = -width/2;
+          stars[i].y = random(bounds.y, bounds.height);
+        }
+        stars[i].x ++;
+      }
+    }
+    
+    if (checkKey('d'))
+    {
+      theta -= radians(1);
+      for(int i = 0; i < 1000; i++)
+      {
+        if(stars[i].x < -width/2)
+        {
+          stars[i].x = width/2;
+          stars[i].y = random(bounds.y, bounds.height);
+        }
+        stars[i].x --;
+      }
+    }
+    
     if(hyperdrive)
     {
       if(!inHyperspace)
@@ -225,7 +253,6 @@ class Space
          point(stars[i].x, stars[i].y);
        } 
      }
-     theta += radians(1);
   }
   
   boolean inHyperspace()
