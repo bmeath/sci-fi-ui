@@ -11,6 +11,7 @@ Button radarPower;
 Button hyperdrive;
 Button lightSwitch;
 Gun gun;
+SoundFile ambientSound; // source: https://www.freesound.org/people/qubodup/sounds/212025/
 SoundFile clickSound; // source: https://www.freesound.org/people/josepharaoh99/sounds/367997/
 SoundFile warpSound; // source: https://www.freesound.org/people/Fantozzi/sounds/163077/
 SoundFile stopwarpSound; // source: https://www.freesound.org/people/LittleRobotSoundFactory/sounds/270553/
@@ -29,9 +30,13 @@ void setup()
   compass = new Compass(0.48 * width, 0.008 * height, 64, 0);
   co2Gauge = new VerticalGauge(0.12 * width, 0.75 * height, 150, "CO2 Level", "mg/L", 0, 20000, 2000, #FF0000, #FFFFFF, #FFFFFF);
   co2Gauge.measure(500);
+  
+  ambientSound = new SoundFile(scifiui.this, "ambient.ogg");
+  ambientSound.loop();
   clickSound = new SoundFile(scifiui.this, "click.mp3");
   warpSound = new SoundFile(scifiui.this, "warp.wav");
   stopwarpSound = new SoundFile(scifiui.this, "stopwarp.wav");
+  
   speedometer = new CircularGauge(0.5 * width - 150/2, 0.63 * height, 150, "Velocity", "x1000\nkm/h", 0, 25, 5, 1, #FF0000, #FFFFFF, #0000FF);
   fuel = new CircularGauge(0.87 * width, 0.75 * height, 125, "Fuel", "Litres", 0, 10000, 2500, 500, #FF0000, #FFFFFF, #FFFF00);
   fuel.measure(9000);

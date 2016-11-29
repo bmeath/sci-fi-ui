@@ -34,7 +34,7 @@ class enemyInfo
     }
     else
     {
-       text("Select a ship\npicked up by the radar\nto view information about it." + enemyName, xPos + size/20, yPos + 0.35 * size);
+       text("Select a ship\non the radar display\nto view information about it." + enemyName, xPos + size/20, yPos + 0.35 * size);
     }
   }
  
