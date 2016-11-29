@@ -12,10 +12,8 @@ class Enemy
   {
     centreX = radCentreX;
     centreY = radCentreY;
-    pos = new PVector(random(radCentreX - radRadius, radCentreX + radRadius), random(radCentreY - radRadius, radCentreY + radRadius));
-    //pos = PVector.fromAngle(random(2 * PI));
-    //pos.setMag(random(radRadius));
-    
+    //pos = new PVector(random(radCentreX - radRadius, radCentreX + radRadius), random(radCentreY - radRadius, radCentreY + radRadius));
+    pos = new PVector(centreX + random(radRadius) * sin(random(2 * PI)), centreY + random(radRadius) * random(2 * PI));
     this.name = name;
     this.speed = speed;
     this.size = size;
@@ -23,7 +21,7 @@ class Enemy
   
   void display()
   {
-    strokeWeight(map(size, 1, 10, 2, 8));
+    strokeWeight(map(size, 5, 5000, 1, 20));
     stroke(#FFFF00);
     point(pos.x, pos.y);
   }
