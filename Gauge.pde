@@ -1,5 +1,6 @@
 abstract class Gauge
 {
+  private SoundFile warning; // source: https://www.freesound.org/people/Serithi/sounds/150326/
   float xPos, yPos;
   float size;
   String title; // name of thing being measured
@@ -14,7 +15,6 @@ abstract class Gauge
   color graduationColour; // colour of the graduations/markings
   color textColour; // colour of unit name and numbers beside markings
   float reading; // value which the pointer will indicate
-  SoundFile warning;
   
   Gauge()
   {
@@ -30,6 +30,7 @@ abstract class Gauge
     max = 100;
     grade = 10;
     reading = 0;
+     warning = new SoundFile(scifiui.this, "warning.wav"); // source: https://www.freesound.org/people/erkanozan/sounds/51752/
   }
   
   Gauge(float xPos, float yPos, float size, String title, String unit, float min, float max, float grade, color pointerColour, color graduationColour, color textColour)
@@ -45,6 +46,7 @@ abstract class Gauge
     this.pointerColour = pointerColour;
     this.graduationColour = graduationColour;
     this.textColour = textColour;
+    warning = new SoundFile(scifiui.this, "warning.wav"); // source: https://www.freesound.org/people/erkanozan/sounds/51752/
   }
   
   abstract void display(); // contains a call to display passing this.reading
@@ -60,6 +62,7 @@ abstract class Gauge
     }
     if(val > max)
     {
+      warning.play();
       val = max;
     }
     this.reading = val;

@@ -5,30 +5,28 @@ class Enemy
   /* size and speed are assumed to be on a scale of 1-10 */
   float speed;
   float size;
-  float centreX;
-  float centreY;
+  float realSize;
   
   Enemy(String name, float speed, float size, float radCentreX, float radCentreY, float radRadius)
   {
-    centreX = radCentreX;
-    centreY = radCentreY;
     //pos = new PVector(random(radCentreX - radRadius, radCentreX + radRadius), random(radCentreY - radRadius, radCentreY + radRadius));
-    pos = new PVector(centreX + random(radRadius) * sin(random(2 * PI)), centreY + random(radRadius) * random(2 * PI));
+    pos = new PVector(radCentreX + random(radRadius) * sin(random(2 * PI)), radCentreY + random(radRadius) * random(2 * PI));
     this.name = name;
     this.speed = speed;
     this.size = size;
+    realSize = map(size, 5, 5000, 3, 20);
   }
   
   void display()
   {
-    strokeWeight(map(size, 5, 5000, 1, 20));
+    strokeWeight(realSize);
     stroke(#FFFF00);
     point(pos.x, pos.y);
   }
   
   boolean checkPressed()
   {
-    if((mouseX > pos.x - size/2) && (mouseX < pos.x + size/2) && (mouseY > pos.y - size/2) && (mouseY < pos.y + size/2))
+    if((mouseX > pos.x - realSize/2) && (mouseX < pos.x + realSize/2) && (mouseY > pos.y - realSize/2) && (mouseY < pos.y + realSize/2))
     {
       return true;
     }
@@ -37,6 +35,6 @@ class Enemy
   
   String toString()
   {
-    return pos.toString() + "\t" + name + "\t" + speed + "\t" + size;
+    return pos.toString() + "\t" + name + "\t" + speed + "\t" + size + "\t" + realSize;
   }
 }

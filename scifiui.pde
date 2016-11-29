@@ -9,7 +9,9 @@ Button radarPower;
 Button hyperdrive;
 Button lightSwitch;
 Gun gun;
+SoundFile clickSound; // source: https://www.freesound.org/people/josepharaoh99/sounds/367997/
 SoundFile warpSound; // source: https://www.freesound.org/people/Fantozzi/sounds/163077/
+SoundFile stopwarpSound; // source: https://www.freesound.org/people/LittleRobotSoundFactory/sounds/270553/
 boolean[] keys = new boolean[1000];
 Slider throttle;
 float timeDelta = 1/60;
@@ -22,7 +24,9 @@ Space space;
 void setup()
 {
   size(1280, 720);
+  clickSound = new SoundFile(scifiui.this, "click.mp3");
   warpSound = new SoundFile(scifiui.this, "warp.wav");
+  stopwarpSound = new SoundFile(scifiui.this, "stopwarp.wav");
   speedometer = new CircularGauge(0.5 * width - 150/2, 0.63 * height, 150, "Velocity", "x1000\nkm/h", 0, 25, 5, 1, #FF0000, #FFFFFF, #0000FF);
   thermometer = new VerticalGauge(0.04 * width, 0.75 * height, 150, "Temperature", "Deg. C", 0, 1500, 250, #FF0000, #FFFFFF, #FFFFFF);
   radar = new Radar(0.7 * width, 0.63 * height, 150, "enemies.csv");
@@ -71,21 +75,25 @@ void draw()
   
 }
 
-void mouseDragged()
-{
-  //throttle.checkPressed();
-}
-
 void mouseClicked()
 {
   // check which of these objects have been clicked, if any
-  radarPower.checkPressed();
+  
+  if(radarPower.checkPressed())
+  {
+    clickSound.play();
+  }
   if(hyperdrive.checkPressed())
   {
+    clickSound.play();
     if(hyperdrive.state == true)
-    {
-      warpSound.loop();
+    { 
+      warpSound.play();
       radar.enemies.clear();
+    }
+    else
+    {
+      stopwarpSound.play();
     }
   }
   for(Enemy e : radar.enemies)
@@ -93,9 +101,13 @@ void mouseClicked()
     if(e.checkPressed())
     {
       enemyInfoScreen.update(e);
-    }  }
+    }  
+  }
   gun.checkFired();
-  lightSwitch.checkPressed();
+  if(lightSwitch.checkPressed())
+  {
+    clickSound.play();
+  }
   
 }
 

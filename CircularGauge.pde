@@ -7,6 +7,7 @@ class CircularGauge extends Gauge
   {
     super();
     minorGrade = 2;
+    
   }
   
   CircularGauge(float xPos, float yPos, float size, String title, String unit, float min, float max, float grade, float minorGrade, color pointerColour, color graduationColour, color textColour)
