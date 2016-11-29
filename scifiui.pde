@@ -11,10 +11,12 @@ Button radarPower;
 Button hyperdrive;
 Button lightSwitch;
 Gun gun;
+
 SoundFile ambientSound; // source: https://www.freesound.org/people/qubodup/sounds/212025/
 SoundFile clickSound; // source: https://www.freesound.org/people/josepharaoh99/sounds/367997/
 SoundFile warpSound; // source: https://www.freesound.org/people/Fantozzi/sounds/163077/
 SoundFile stopwarpSound; // source: https://www.freesound.org/people/LittleRobotSoundFactory/sounds/270553/
+
 boolean[] keys = new boolean[1000];
 float timeDelta = 1/60;
 float shipSpeed = 0;
@@ -27,9 +29,6 @@ Space space;
 void setup()
 {
   size(1280, 720);
-  compass = new Compass(0.48 * width, 0.008 * height, 64, 0);
-  co2Gauge = new VerticalGauge(0.12 * width, 0.75 * height, 150, "CO2 Level", "mg/L", 0, 20000, 2000, #FF0000, #FFFFFF, #FFFFFF);
-  co2Gauge.measure(500);
   
   ambientSound = new SoundFile(scifiui.this, "ambient.ogg");
   ambientSound.loop();
@@ -37,14 +36,7 @@ void setup()
   warpSound = new SoundFile(scifiui.this, "warp.wav");
   stopwarpSound = new SoundFile(scifiui.this, "stopwarp.wav");
   
-  speedometer = new CircularGauge(0.5 * width - 150/2, 0.63 * height, 150, "Velocity", "x1000\nkm/h", 0, 25, 5, 1, #FF0000, #FFFFFF, #0000FF);
-  fuel = new CircularGauge(0.87 * width, 0.75 * height, 125, "Fuel", "Litres", 0, 10000, 2500, 500, #FF0000, #FFFFFF, #FFFF00);
-  fuel.measure(9000);
-  thermometer = new VerticalGauge(0.04 * width, 0.75 * height, 150, "Temperature", "Deg. C", 0, 1500, 250, #FF0000, #FFFFFF, #FFFFFF);
-  radar = new Radar(0.7 * width, 0.63 * height, 150, enemyInfoFile);
-  radarPower = new Button(0.7 * width, 0.85 * height, 48, "Radar", #303030, #FEA500, true);
-  hyperdrive = new Button(0.47 * width, 0.95 * height, 64, "Warp", #303030, #00FFFF, false); 
-  enemyInfoScreen = new enemyInfo(0.2 * width, 0.63 * height, width/6);
+  
   
   window.addPoint(0, (int)(0.15 * height));
   window.addPoint((int)(0.1 * width), (int)(0.15 * height));
@@ -59,6 +51,17 @@ void setup()
   
   space = new Space(1000, window);
   gun = new Gun(0.5 * width, 0.59 * height, window,#FF0000);
+  compass = new Compass(0.48 * width, 0.008 * height, 64, 0);
+  co2Gauge = new VerticalGauge(0.12 * width, 0.75 * height, 150, "CO2 Level", "mg/L", 0, 20000, 2000, #FF0000, #FFFFFF, #FFFFFF);
+  co2Gauge.measure(500);
+  speedometer = new CircularGauge(0.5 * width - 150/2, 0.63 * height, 150, "Velocity", "x1000\nkm/h", 0, 25, 5, 1, #FF0000, #FFFFFF, #0000FF);
+  fuel = new CircularGauge(0.87 * width, 0.75 * height, 125, "Fuel", "Litres", 0, 10000, 2500, 500, #FF0000, #FFFFFF, #FFFF00);
+  fuel.measure(9000);
+  thermometer = new VerticalGauge(0.04 * width, 0.75 * height, 150, "Temperature", "Deg. C", 0, 1500, 250, #FF0000, #FFFFFF, #FFFFFF);
+  radar = new Radar(0.7 * width, 0.63 * height, 150, enemyInfoFile);
+  radarPower = new Button(0.7 * width, 0.85 * height, 48, "Radar", #303030, #FEA500, true);
+  hyperdrive = new Button(0.47 * width, 0.95 * height, 64, "Warp", #303030, #00FFFF, false); 
+  enemyInfoScreen = new enemyInfo(0.2 * width, 0.63 * height, width/6);
   lightSwitch = new Button(0.7 * width, 0.05 * height, 48, "Light", #303030, #FEA500, true);
 }
 
@@ -67,10 +70,9 @@ void draw()
   drawInterior();
   space.display(hyperdrive.state);
   gun.display(mouseX, mouseY);
-  
   compass.display(space.theta);
   co2Gauge.display();
-  speedometer.display(hyperdrive.state ? random(speedometer.min, speedometer.max) : shipSpeed);
+  speedometer.display(hyperdrive.state ? random(speedometer.min, speedometer.max) : shipSpeed); // show random speed when at hyperspeed
   fuel.display();
   radarPower.display();
   hyperdrive.display();
@@ -78,6 +80,7 @@ void draw()
   lightSwitch.display();
   enemyInfoScreen.display();
   
+  /* display radar if powered on */
   stroke(91);
   fill(0);
   rect(radar.xPos, radar.yPos, radar.size, radar.size);

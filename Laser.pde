@@ -31,7 +31,7 @@ class Laser
   {
     pos.add(PVector.mult(forward, speed));
     stroke(colour);
-    size = map(dist(pos.x, pos.y, dest.x, dest.y), dist, 0, 10, 0);
+    size = map(dist(pos.x, pos.y, dest.x, dest.y), dist, 0, 10, 0); // give depth effect
     strokeWeight(size);
     line(pos.x, pos.y, pos.x + (2 * speed * forward.x), pos.y + (2 * speed * forward.y));
   }
